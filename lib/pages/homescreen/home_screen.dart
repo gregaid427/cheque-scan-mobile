@@ -68,23 +68,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (value != '') {
                           imageCropperView(value, context).then((value) {
                             if (value != '') {
+
                               Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (_) => RecognizePage(
-                                    path: value,
-                                  ),
-                                ),
-                              );
+                                  context, MaterialPageRoute(builder: (context) => RecognizePage( path:value )));
+
+
                             }
                           });
-                        }else{
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (_) => LoginScreen(),
-                            ),
-                          );
                         }
                       });
                     });

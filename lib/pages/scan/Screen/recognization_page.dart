@@ -29,7 +29,7 @@ class _RecognizePageState extends State<RecognizePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("recognized page")),
-        body: _isBusy == true
+        body: true == true
             ? const Center(
                 child: CircularProgressIndicator(),
               )

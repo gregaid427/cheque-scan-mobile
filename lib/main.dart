@@ -1,3 +1,4 @@
+import 'package:cheque_scan/pages/authentication/sign_in/login_screen.dart';
 import 'package:cheque_scan/pages/chequebackscan/back_cheque_scan.dart';
 import 'package:cheque_scan/pages/chequefrontscan/front_cheque_scan.dart';
 import 'package:cheque_scan/pages/homescreen/home_screen.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SafeArea(child: HomeScreen()),
+      home: SafeArea(child: LoginScreen()),
     );
   }
 }

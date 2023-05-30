@@ -30,73 +30,75 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     CardScrollViewModel cardScrollViewModel = CardScrollViewModel();
 
-    return Scaffold(
-      body: Column(
-        children: [
-          CustomAppbar(),
-          Container(
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            CustomAppbar(),
+            Container(
 
-            height: screenHeight * 0.30,
+              height: screenHeight * 0.30,
 
-            child: Column(
-              children: [
-                Image( image: AssetImage('assets/images/scanimg.PNG'), height: screenHeight * 0.24, ),
-                Spacer(),
-                GestureDetector(   onTap: () {
-                  imagePickerModal(context, onCameraTap: () {
-                    log("Camera");
-                    pickImage(source: ImageSource.camera).then((value) {
-                      if (value != '') {
-                        imageCropperView(value, context).then((value) {
-                          if (value != '') {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (_) => RecognizePage(
-                                  path: value,
+              child: Column(
+                children: [
+                  Image( image: AssetImage('assets/images/scanimg.PNG'), height: screenHeight * 0.24, ),
+                  Spacer(),
+                  GestureDetector(   onTap: () {
+                    imagePickerModal(context, onCameraTap: () {
+                      log("Camera");
+                      pickImage(source: ImageSource.camera).then((value) {
+                        if (value != '') {
+                          imageCropperView(value, context).then((value) {
+                            if (value != '') {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (_) => RecognizePage(
+                                    path: value,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                        });
-                      }
-                    });
-                  }, onGalleryTap: () {
-                    log("Gallery");
-                    pickImage(source: ImageSource.gallery).then((value) {
-                      if (value != '') {
-                        imageCropperView(value, context).then((value) {
-                          if (value != '') {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (_) => RecognizePage(
-                                  path: value,
+                              );
+                            }
+                          });
+                        }
+                      });
+                    }, onGalleryTap: () {
+                      log("Gallery");
+                      pickImage(source: ImageSource.gallery).then((value) {
+                        if (value != '') {
+                          imageCropperView(value, context).then((value) {
+                            if (value != '') {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (_) => RecognizePage(
+                                    path: value,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                        });
-                      }else{
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (_) => LoginScreen(),
-                          ),
-                        );
-                      }
+                              );
+                            }
+                          });
+                        }else{
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (_) => LoginScreen(),
+                            ),
+                          );
+                        }
+                      });
                     });
-                  });
-                }, child: const Text('scan cheque' ,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)),
-                SizedBox(height: 10,)
-              ],
+                  }, child: const Text('scan cheque' ,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)),
+                  SizedBox(height: 10,)
+                ],
+              ),
             ),
-          ),
-          CardScrollView(cardItems: cardScrollViewModel.cardItems),
-          const LinkAccountText(),
-          History(),
-          Flexible(child: SingleListItem())
-        ],
+            CardScrollView(cardItems: cardScrollViewModel.cardItems),
+            const LinkAccountText(),
+            History(),
+            Flexible(child: SingleListItem())
+          ],
+        ),
       ),
     );
   }

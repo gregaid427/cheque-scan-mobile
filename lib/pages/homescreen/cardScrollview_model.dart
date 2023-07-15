@@ -1,4 +1,28 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+
+
 class CardScrollViewModel {
+
+  Map? serverD;
+  List? decop;
+
+  Future Apicall1() async {
+    http.Response response;
+    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/Transactions"));
+    print(response);
+    if(response.statusCode == 200){
+      print("called");
+      serverD = json.decode(response.body);
+      decop = serverD?['data'];
+return decop;
+      // setState(() {
+      //   serverD = json.decode(response.body);
+      // });
+    }
+  }
 
   List<Map<String, dynamic>> cardItems = [
     {

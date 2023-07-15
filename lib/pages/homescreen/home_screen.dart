@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cheque_scan/components/rounded_button.dart';
@@ -9,22 +10,31 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../components/ custom_appbar.dart';
 import '../../constants/constants.dart';
+import '../chequefrontscan/front_cheque_scan.dart';
 import '../scan/Screen/recognization_page.dart';
 import '../scan/Utils/image_cropper_page.dart';
 import '../scan/Utils/image_picker_class.dart';
 
+import '../scan/scanpage.dart';
 import 'cardScrollview_model.dart';
 import 'cardscrollview.dart';
+import 'homecardsingle.dart';
 import 'homescreenviewmodel.dart';
+
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+
 }
 
+
+
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -36,57 +46,55 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             CustomAppbar(),
             Container(
-
               height: screenHeight * 0.30,
-
               child: Column(
                 children: [
-                  Image( image: AssetImage('assets/images/scanimg.PNG'), height: screenHeight * 0.24, ),
+                  Image(
+                    image: AssetImage('assets/images/scanimg.PNG'),
+                    height: screenHeight * 0.22,
+                  ),
                   Spacer(),
-                  GestureDetector(   onTap: () {
-                    imagePickerModal(context, onCameraTap: () {
-                      log("Camera");
-                      pickImage(source: ImageSource.camera).then((value) {
-                        if (value != '') {
-                          imageCropperView(value, context).then((value) {
-                            if (value != '') {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (_) => RecognizePage(
-                                    path: value,
-                                  ),
-                                ),
-                              );
-                            }
-                          });
-                        }
-                      });
-                    }, onGalleryTap: () {
-                      log("Gallery");
-                      pickImage(source: ImageSource.gallery).then((value) {
-                        if (value != '') {
-                          imageCropperView(value, context).then((value) {
-                            if (value != '') {
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (_) => FrontScanPage(),
+                                      ),
+                                    );
 
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => RecognizePage( path:value )));
-
-
-                            }
-                          });
-                        }
-                      });
-                    });
-                  }, child: const Text('scan cheque' ,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)),
-                  SizedBox(height: 10,)
+                      // log("Gallery");
+                      // pickImage(source: ImageSource.gallery).then((value) {
+                      //   if (value != '') {
+                      //     imageCropperView(value, context).then((value) {
+                      //       if (value != '') {
+                      //         Navigator.push(
+                      //           context,
+                      //           CupertinoPageRoute(
+                      //             builder: (_) => RecognizePage(
+                      //               path: value,
+                      //             ),
+                      //           ),
+                      //         );
+                      //       }
+                      //     });
+                      //   }
+                      // });
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Scan Cheque",
+                          style: TextStyle( color: kPrimaryColor,
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                    ),
+                  ),
                 ],
               ),
             ),
-            CardScrollView(cardItems: cardScrollViewModel.cardItems),
+            CardScrollView(),
             const LinkAccountText(),
-            History(),
-            Flexible(child: SingleListItem())
+            const History(),
+            const Flexible(child: SingleListItem())
           ],
         ),
       ),
@@ -94,32 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class SingleListItem extends StatelessWidget {
-  const SingleListItem({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: List.generate(
-              HomeScreeViewModel.historyItems.length,
-              (index) => HistorySingleItem(
-                    issuer: HomeScreeViewModel.Trimstring(
-                        HomeScreeViewModel.historyItems[index]["issuer"]),
-                    accountDeposited: HomeScreeViewModel.Trimstring(
-                        HomeScreeViewModel.historyItems[index]["account"]),
-                    amount: HomeScreeViewModel.Trimstring(
-                        HomeScreeViewModel.historyItems[index]["amount"]),
-                  )),
-        ),
-      ),
-    );
-  }
-}
 
 class HistorySingleItem extends StatelessWidget {
   const HistorySingleItem({
@@ -139,7 +121,11 @@ class HistorySingleItem extends StatelessWidget {
       children: [
         Expanded(flex: 6, child: Text(issuer, style: kHistoryStyle1)),
         Expanded(flex: 6, child: Text(accountDeposited, style: kHistoryStyle1)),
-        Expanded(flex: 4, child: Align( alignment:Alignment.topRight ,child: Text(amount, style: kHistoryStyle1))),
+        Expanded(
+            flex: 4,
+            child: Align(
+                alignment: Alignment.topRight,
+                child: Text(amount.toString(), style: kHistoryStyle1))),
       ],
     );
   }
@@ -167,11 +153,11 @@ class History extends StatelessWidget {
                 fontSize: 17),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
+        const Padding(
+          padding: EdgeInsets.all(10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               Text('Issuer', style: kHistoryStyle),
               Text('      Account Deposit', style: kHistoryStyle),
               Text('Amount', style: kHistoryStyle),
@@ -194,8 +180,8 @@ class LinkAccountText extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LinkNewAccount()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LinkNewAccount()));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -219,9 +205,6 @@ class LinkAccountText extends StatelessWidget {
     );
   }
 }
-
-
-
 
 void imagePickerModal(BuildContext context,
     {VoidCallback? onCameraTap, VoidCallback? onGalleryTap}) {
@@ -247,23 +230,8 @@ void imagePickerModal(BuildContext context,
                 ),
               ),
               const SizedBox(height: 10),
-              GestureDetector(
-                onTap: onGalleryTap,
-                child: Card(
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(15),
-                    decoration: const BoxDecoration(color: Colors.grey),
-                    child: const Text("Gallery",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
-                  ),
-                ),
-              ),
             ],
           ),
         );
       });
 }
-
-

@@ -4,20 +4,26 @@ import 'package:flutter/material.dart';
 
 import '../../components/rounded_button.dart';
 import '../../constants/constants.dart';
+import '../chequebackscan/back_cheque_scan_model.dart';
+
+
+BackscanModel backscanModel = new BackscanModel();
 
 class TransactionsPreview extends StatelessWidget {
   const TransactionsPreview({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      body: Container(
+      body: SafeArea(
         child: Column(
           children: [
-            CustomAppbar(),
-            const Text('Transaction Preview', style: kTitleStyle),
+            const CustomAppbar(),
+            Expanded(child: const Text('Transaction Preview', style: kTitleStyle)),
             Expanded(
-                flex: 5,
+                flex: 7,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
@@ -58,13 +64,13 @@ class TransactionsPreview extends StatelessWidget {
                             const SizedBox(height:13),
 
 
-                            Text('Name :', style: TextStyle( color: Colors.grey,fontSize: 17)),
+                            const Text('Name :', style: TextStyle( color: Colors.grey,fontSize: 17)),
                             const SizedBox(height: 10, ),
-                            Text('Account Type :', style: TextStyle( color: Colors.grey,fontSize: 17)),
+                            const Text('Account Type :', style: TextStyle( color: Colors.grey,fontSize: 17)),
                             const SizedBox(height: 10, ),
-                            Text('Bank :', style: TextStyle( color: Colors.grey,fontSize: 17)),
+                            const Text('Bank :', style: TextStyle( color: Colors.grey,fontSize: 17)),
                             const SizedBox(height: 10, ),
-                            Text('Account Number :', style: TextStyle( color: Colors.grey,fontSize: 17)),
+                            const Text('Account Number :', style: TextStyle( color: Colors.grey,fontSize: 17)),
 
                           ],
                         ),
@@ -75,7 +81,7 @@ class TransactionsPreview extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children:  [
-                            Text('Amount', style: TextStyle( color: Colors.grey,fontSize: 17)),
+                            const Text('Amount', style: TextStyle( color: Colors.grey,fontSize: 17)),
                             const SizedBox(height:13),
                             Text('GHS 13,000,000.00', style: TextStyle( color: Colors.deepOrange.shade400,fontSize: 20)),
 
@@ -87,13 +93,13 @@ class TransactionsPreview extends StatelessWidget {
                     ),
                   ),
                 )),
-            Expanded(
+            const Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(10.0),
                   child: Center(
                       child: Row(
-                    children: const [
+                    children: [
                       CancelButton(),
                       SizedBox(
                         width: 20,
@@ -118,7 +124,11 @@ class ConfimButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+
+          backscanModel.uploadImage();
+
+        },
         child: Container(
           // color: kPrimaryGradientColor,
           height: 50,

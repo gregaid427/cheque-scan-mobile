@@ -84,9 +84,6 @@ class TransactionsPreview extends StatelessWidget {
                             const Text('Amount', style: TextStyle( color: Colors.grey,fontSize: 17)),
                             const SizedBox(height:13),
                             Text('GHS 13,000,000.00', style: TextStyle( color: Colors.deepOrange.shade400,fontSize: 20)),
-
-
-
                           ],
                         )
                       ],

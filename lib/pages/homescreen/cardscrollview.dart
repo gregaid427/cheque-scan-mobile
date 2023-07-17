@@ -40,7 +40,7 @@ class _CardScrollViewState extends State<CardScrollView> {
       print("called");
       serverD = json.decode(response.body);
       decop = serverD?['data'];
-      print(decop);
+     // print(decop);
       setState(() {
         serverD = json.decode(response.body);
       });
@@ -58,10 +58,10 @@ class _CardScrollViewState extends State<CardScrollView> {
         children: List.generate(
              decop?.length == null ? 0 : decop!.length,
               (index) => HomeCard(
-            accountType: decop?[index]["accountType"].toString(),
-            accountNumber: decop?[index]["accountNumber"].toString(),
-            scanneedNumber: decop?[index]["total_no_scan"].toString(),
-            TotalscanneedAmount: decop?[index]["accountType"].toString()
+            accountType: decop?.length == null ? '' : decop?[index]["accountType"].toString(),
+            accountNumber: decop?.length == null ? '' : decop?[index]["accountNumber"].toString(),
+            scanneedNumber: decop?.length == null ? '' :  decop?[index]["total_no_scan"].toString(),
+            TotalscanneedAmount: decop?.length == null ? '' : decop?[index]["accountType"].toString()
           ),
         ),
       ),

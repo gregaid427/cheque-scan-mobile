@@ -24,7 +24,7 @@ import 'homescreenviewmodel.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required String accesstoken}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -183,9 +183,9 @@ class LinkAccountText extends StatelessWidget {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => LinkNewAccount()));
         },
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               CupertinoIcons.add_circled,
               color: kPrimaryColor,

@@ -38,7 +38,7 @@ class _SingleListItemState extends State<SingleListItem> {
 
   Future Apicall() async {
     http.Response response;
-    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/Transactions"));
+    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/Transactions/5"));
     print(response);
     if(response.statusCode == 200){
       print("called");
@@ -49,6 +49,7 @@ class _SingleListItemState extends State<SingleListItem> {
         serverD = json.decode(response.body);
       });
     }
+    print(serverD);
   }
 
 
@@ -58,12 +59,12 @@ class _SingleListItemState extends State<SingleListItem> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: serverD == null ? Container(child: const Text('No transactions history'),) : SingleChildScrollView(
+      child: decop == null ? Container(child: const Text('No transactions history'),) : SingleChildScrollView(
         child:  Column(
           children: [
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(), //<--here
-                itemCount: decop!.length == null ? 0 : decop!.length,
+                itemCount: decop == null ? 0 : decop!.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
       return HistorySingleItem(

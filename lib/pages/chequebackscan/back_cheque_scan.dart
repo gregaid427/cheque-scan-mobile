@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../components/ custom_appbar.dart';
 import '../../components/rounded_button.dart';
 import '../../constants/constants.dart';
+import '../chequefrontscan/front_cheque_scan.dart';
 import '../scan/scanpage2.dart';
 import '../transactions/transactions_preview.dart';
 import 'back_cheque_scan_model.dart';
@@ -82,28 +83,36 @@ class _BackScanPageState extends State<BackScanPage> {
                             // height: screenHeight * 0.22,
                           ),
                         ),
-
                       if (!textScanning && imageFile == null)
-                        Column(
+                        Spacer(),
+                      if (!textScanning && imageFile == null)
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: RoundedButton(
-                                  title: 'Camera',
-                                  backgroundColor: kPrimaryColor,
-                                  color: Colors.white,
-                                  press: () => getImage(ImageSource.camera)),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: RoundedButtonborders(
+                                    title: 'Camera',
+                                    backgroundColor: Colors.white,
+                                    color: kPrimaryColor,
+                                    borderColor: kPrimaryColor,
+                                    press: () => getImage(ImageSource.camera)),
+                              ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: RoundedButton(
-                                  title: ' Gallery ',
-                                  backgroundColor: kPrimaryColor,
-                                  color: Colors.white,
-                                  press: () => getImage(ImageSource.gallery)),
-                            ),
-                          ],
+
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: RoundedButtonborders(
+                                    title: ' Gallery ',
+                                    backgroundColor: Colors.white,
+                                    color: kPrimaryColor,
+                                    borderColor: kPrimaryColor,
+
+                                    press: () => getImage(ImageSource.gallery)),
+                              ),
+                            ),                          ],
                         ),
 
                       // if (imageFile == null)
@@ -118,6 +127,7 @@ class _BackScanPageState extends State<BackScanPage> {
                             )
                                 : Expanded(
                                 child: Image.file(File(imageFile!.path)))),
+
                       //
 
                       const SizedBox(
@@ -129,117 +139,130 @@ class _BackScanPageState extends State<BackScanPage> {
                       //     style: TextStyle(fontSize: 20),
                       //   ),
                       // ),
+
+
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Container(
-                          child:  Column(
+                        child: showNext != true
+                            ? null
+                            :Container(
+                          child:  Row(
                             children: [
-                              RoundedButton(
-                                title: 'Continue',
-                                color: Colors.white,
-                                backgroundColor: kPrimaryColor,
-                                press: () {
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet<void>(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height *
+                                              0.3,
+                                          color: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 30,
+                                              left: 30,
+                                              right: 30,
+                                              bottom: 15,
+                                            ),
+                                            child: Column(
+                                              //  crossAxisAlignment: CrossAxisAlignment.start,
+                                              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              // mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(context)
+                                                        .pop();
+                                                    getImage(
+                                                        ImageSource.camera);
+                                                  },
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 13),
+                                                    margin: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 5),
+                                                    color: kPrimaryColor,
+                                                    child: const Center(
+                                                        child: Text(
+                                                          "Camera",
+                                                          style: TextStyle(
+                                                              fontSize: 19,
+                                                              color:
+                                                              Colors.white),
+                                                        )),
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(context)
+                                                        .pop();
+                                                    getImage(ImageSource
+                                                        .gallery);
+                                                  },
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 13),
+                                                    margin: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 5),
+                                                    color: kPrimaryColor,
+                                                    child: const Center(
+                                                        child: Text(
+                                                          "Gallery",
+                                                          style: TextStyle(
+                                                              fontSize: 19,
+                                                              color:
+                                                              Colors.white),
+                                                        )),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: const RoundedButtonborders(
+                                    title: ' Rescan ',
+                                    color: kPrimaryColor,
+                                    borderColor: kPrimaryColor,
 
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (_) => const TransactionsPreview(),
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(height: 5),
-                              InkWell(
-                                onTap: () {
-                                  showModalBottomSheet<void>(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: MediaQuery.of(context)
-                                            .size
-                                            .height *
-                                            0.3,
-                                        color: Colors.white,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 30,
-                                            left: 30,
-                                            right: 30,
-                                            bottom: 15,
-                                          ),
-                                          child: Column(
-                                            //  crossAxisAlignment: CrossAxisAlignment.start,
-                                            //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            // mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.of(context)
-                                                      .pop();
-                                                  getImage(
-                                                      ImageSource.camera);
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  padding:
-                                                  const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 13),
-                                                  margin: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 5),
-                                                  color: kPrimaryColor,
-                                                  child: const Center(
-                                                      child: Text(
-                                                        "Camera",
-                                                        style: TextStyle(
-                                                            fontSize: 19,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.of(context)
-                                                      .pop();
-                                                  getImage(ImageSource
-                                                      .gallery);
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  padding:
-                                                  const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 13),
-                                                  margin: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 5),
-                                                  color: kPrimaryColor,
-                                                  child: const Center(
-                                                      child: Text(
-                                                        "Gallery",
-                                                        style: TextStyle(
-                                                            fontSize: 19,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const RoundedButton(
-                                  title: ' Rescan ',
-                                  color: Colors.white,
-                                  backgroundColor: kPrimaryColor,
+                                    backgroundColor: Colors.white,
+                                  ),
                                 ),
                               ),
+                              SizedBox(height: 5, width: 10,),
+                              Expanded(
+                                child: RoundedButtonborders(
+                                  title: 'Continue',
+                                  color: Colors.white,
+                                  backgroundColor: kPrimaryColor,
+                                  borderColor: kPrimaryColor,
+
+                                  press: () {
+                                    //  backscanModel.imageFile1 = imageFile;
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (_) => const TransactionsPreview(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+
                             ],
                           ),
                         ),

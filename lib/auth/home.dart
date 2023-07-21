@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<Map<String, dynamic>> getUserData() async {
     dynamic userRes;
-    userRes = await _apiClient.getUserProfileData(widget.accesstoken);
+    //userRes = await _apiClient.getUserProfileData(widget.accesstoken);
     return userRes;
   }
 

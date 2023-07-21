@@ -21,8 +21,8 @@ const kButtonGradientColor = LinearGradient(
 const kTitleStyle =
   TextStyle(
         color: kPrimaryColor,
-        fontWeight: FontWeight.bold,
-        fontSize: 21
+        //fontWeight: FontWeight.bold,
+        fontSize: 19
 
 
 );

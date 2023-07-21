@@ -9,6 +9,8 @@ class Validator {
     }
   }
 
+
+
   static String? validateDropDefaultData(value) {
     if (value == null) {
       return 'Please select an item.';
@@ -26,10 +28,17 @@ class Validator {
       return null;
     }
   }
+  static String? validateConfirmPassword(String password1, String password2) {
+    if (password1 != password2) {
+      return '🚩 Passwords do not match' ;
+    } else {
+      return null;
+    }
+  }
 
   static String? validateName(String value) {
-    if (value.length < 3) {
-      return '🚩 Username is too short.';
+    if (value.length == null) {
+      return '🚩 FIeld is required.';
     } else {
       return null;
     }

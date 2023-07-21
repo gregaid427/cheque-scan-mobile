@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> login() async {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Processing Data'),
+        content: const Text('Authenticating...'),
         backgroundColor: Colors.green.shade300,
       ));
 
@@ -36,15 +36,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-      if (res['ErrorCode'] == null) {
+      if (res['success'] == 1) {
         String accessToken = res['access_token'];
+        String User_id = res['userId'].toString();
+
+
+
+        print('correct credentials');
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => HomeScreen(accesstoken: accessToken)));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${res['Message']}'),
+          content: Text('Error: ${res['data']}'),
           backgroundColor: Colors.red.shade300,
         ));
       }

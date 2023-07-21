@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:cheque_scan/auth/validator.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/authentication/sign_in/login_screen.dart';
+import 'login_screen.dart';
 import 'api_client.dart';
 // import 'package:loginradius_example/core/api_client.dart';
 // import 'package:loginradius_example/screens/login_screen.dart';
@@ -26,36 +26,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> registerUsers() async {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Processing Data'),
+        content: const Text('Creating Account...'),
         backgroundColor: Colors.green.shade300,
       ));
 
       Map<String, dynamic> userData = {
-        "Email": [
-          {
-            "Type": "Primary",
-            "Value": emailController.text,
-          }
-        ],
-        "Password": passwordController.text,
-        "About": 'I am a new user :smile:',
-        "FirstName": "Test",
-        "LastName": "Account",
-        "FullName": "Test Account",
-        "BirthDate": "10-12-1985",
-        "Gender": "M",
+        "email":
+           emailController.text,
+
+        "password": passwordController.text,
+
+        "contact": "undefined",
+        "role": "undefined",
+        "firstname": "undefined",
+        "lastname": "undefined",
+        "othername": "undefined",
+        "ghCardNumber": "undefined",
+        "sex": "undefined",
+        "createdAt": "undefined",
+        "dob": "undefined"
       };
 
       dynamic res = await _apiClient.registerUser(userData);
 
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-      if (res['ErrorCode'] == null) {
+      if (res['success'] == 1) {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const LoginScreen()));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${res['Message']}'),
+          content: Text('Error: ${res['message']}'),
           backgroundColor: Colors.red.shade300,
         ));
       }

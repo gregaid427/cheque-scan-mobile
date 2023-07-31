@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cheque_scan/pages/transactions/transactions_preview.dart';
+//import 'package:cheque_scan/pages/transactions/transactions_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

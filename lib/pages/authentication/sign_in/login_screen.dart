@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => HomeScreen(accesstoken: accessToken)));
+                builder: (context) =>  HomeScreen()));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Error: ${res['data']}'),
@@ -109,96 +109,95 @@ class _LoginScreenState extends State<LoginScreen> {
                       gradient: kButtonGradientColor,
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(50))),
-                  child: Center(
-                      child: SingleChildScrollView(
+                  child: SingleChildScrollView(
                     child: Form(
-                      key: _formKey,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                  key: _formKey,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [],
+                          ),
+                        ),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomTextField(
-                                  // controller:signInViewModel.usernameController,
-                                  controller: emailController,
-                                  validator: (value) {
-                                    return Validator.validateEmail(value ?? "");
-                                  },
-                                  type: TextFieldType.email,
-                                  //  prefixImage: 'assets/icons/lock.svg',
-                                  hintText: 'Email',
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                CustomTextField(
-                                  //  controller:signInViewModel.passwordController,
-                                  //  obscure: _showPassword,
-                                  controller: passwordController,
-                                  validator: (value) {
-                                    return Validator.validatePassword(
-                                        value ?? "");
-                                  },
-
-                                  //  prefixImage: 'assets/icons/password.svg',
-                                  hintText: 'Password',
-                                  obscure: obscure,
-                                  type: TextFieldType.password,
-                                  suffixFunc: () => changePasswordvisibility(),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                  onTap: () {},
-                                  child: const Text(
-                                    'Forgot Password?',
-                                    style: kTitleStyle,
-                                  )),
+                            CustomTextField(
+                              // controller:signInViewModel.usernameController,
+                              controller: emailController,
+                              validator: (value) {
+                                return Validator.validateEmail(value ?? "");
+                              },
+                              type: TextFieldType.email,
+                              //  prefixImage: 'assets/icons/lock.svg',
+                              hintText: 'Email',
                             ),
                             const SizedBox(
-                              height: 30,
+                              height: 15,
                             ),
-                            Center(
-                              child: RoundedButton(
-                                title: 'Login',
-                                color: kPrimaryColor,
-                                backgroundColor: Colors.white,
-                                press: () => login(),
-                              ),
+                            CustomTextField(
+                              //  controller:signInViewModel.passwordController,
+                              //  obscure: _showPassword,
+                              controller: passwordController,
+                              validator: (value) {
+                                return Validator.validatePassword(
+                                    value ?? "");
+                              },
+
+                              //  prefixImage: 'assets/icons/password.svg',
+                              hintText: 'Password',
+                              obscure: obscure,
+                              type: TextFieldType.password,
+                              suffixFunc: () => changePasswordvisibility(),
                             ),
-                            SizedBox(
-                              height: 25,
+                            const SizedBox(
+                              height: 10,
                             ),
-                            Center(
-                              child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignUpScreen()));
-                                  },
-                                  child: const Text(
-                                    'Don\'t have an account? Sign-Up',
-                                    style: kTitleStyle,
-                                  )),
-                            ),
-                          ]),
+                          ],
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: GestureDetector(
+                              onTap: () {},
+                              child: const Text(
+                                'Forgot Password?',
+                                style: kTitleStyle,
+                              )),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Center(
+                          child: RoundedButton(
+                            title: 'Login',
+                            color: kPrimaryColor,
+                            backgroundColor: Colors.white,
+                            press: () => login(),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Center(
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignUpScreen()));
+                              },
+                              child: const Text(
+                                'Don\'t have an account? Sign-Up',
+                                style: kTitleStyle,
+                              )),
+                        ),
+                      ]),
                     ),
-                  ))),
+                  )),
             ),
           ]),
         ));

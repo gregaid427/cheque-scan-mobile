@@ -25,7 +25,7 @@ import 'homescreenviewmodel.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required String accesstoken}) : super(key: key);
+   HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -41,67 +41,66 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     CardScrollViewModel cardScrollViewModel = CardScrollViewModel();
 
-    return RegisterScreen();
 
-    // return SafeArea(
-    //   child: Scaffold(
-    //     body: Column(
-    //       children: [
-    //         CustomAppbar(),
-    //         Container(
-    //           height: screenHeight * 0.30,
-    //           child: Column(
-    //             children: [
-    //               Image(
-    //                 image: AssetImage('assets/images/scanimg.PNG'),
-    //                 height: screenHeight * 0.22,
-    //               ),
-    //               Spacer(),
-    //               GestureDetector(
-    //                 onTap: () {
-    //                   Navigator.push(
-    //                                 context,
-    //                                 CupertinoPageRoute(
-    //                                   builder: (_) => FrontScanPage(),
-    //                                   ),
-    //                                 );
-    //
-    //                   // log("Gallery");
-    //                   // pickImage(source: ImageSource.gallery).then((value) {
-    //                   //   if (value != '') {
-    //                   //     imageCropperView(value, context).then((value) {
-    //                   //       if (value != '') {
-    //                   //         Navigator.push(
-    //                   //           context,
-    //                   //           CupertinoPageRoute(
-    //                   //             builder: (_) => RecognizePage(
-    //                   //               path: value,
-    //                   //             ),
-    //                   //           ),
-    //                   //         );
-    //                   //       }
-    //                   //     });
-    //                   //   }
-    //                   // });
-    //                 },
-    //                 child: const Padding(
-    //                   padding: EdgeInsets.all(8.0),
-    //                   child: Text("Scan Cheque",
-    //                       style: TextStyle( color: kPrimaryColor,
-    //                           fontWeight: FontWeight.bold, fontSize: 20)),
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //         CardScrollView(),
-    //         const LinkAccountText(),
-    //         const History(),
-    //         const Flexible(child: SingleListItem())
-    //       ],
-    //     ),
-    //   ),
-    // );
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            CustomAppbar(),
+            Container(
+              height: screenHeight * 0.30,
+              child: Column(
+                children: [
+                  Image(
+                    image: AssetImage('assets/images/scanimg.PNG'),
+                    height: screenHeight * 0.22,
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (_) => FrontScanPage(),
+                                      ),
+                                    );
+
+                      // log("Gallery");
+                      // pickImage(source: ImageSource.gallery).then((value) {
+                      //   if (value != '') {
+                      //     imageCropperView(value, context).then((value) {
+                      //       if (value != '') {
+                      //         Navigator.push(
+                      //           context,
+                      //           CupertinoPageRoute(
+                      //             builder: (_) => RecognizePage(
+                      //               path: value,
+                      //             ),
+                      //           ),
+                      //         );
+                      //       }
+                      //     });
+                      //   }
+                      // });
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Scan Cheque",
+                          style: TextStyle( color: kPrimaryColor,
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            CardScrollView(),
+            const LinkAccountText(),
+            const History(),
+            const Flexible(child: SingleListItem())
+          ],
+        ),
+      ),
+    );
   }
 }
 

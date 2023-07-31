@@ -35,12 +35,13 @@ class ApiClient {
           'email': email,
           'password': password,
         },
+
         // queryParameters: {'apikey': ApiSecret.apiKey},
       );
       print(response.data);
       return response.data;
     } on DioError catch (e) {
-      return e.response!.data;
+      return 'conn err';
     }
   }
 

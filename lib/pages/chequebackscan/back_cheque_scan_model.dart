@@ -1,6 +1,11 @@
+
 import 'package:dio/dio.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../../core/provider/Transactionsdata.dart';
 
 class BackscanModel {
 
@@ -12,42 +17,52 @@ class BackscanModel {
 
   }
 
-  Future<void> uploadImage() async {
-    print("im caled oooo");
+  String? imageFront ;
+  Future<int?> uploadImage({required imagefront,required imageback, required scanAccntNo, required scanBankNo, String? user_id}) async {
+    print("File Upload Called");
+    print(imagefront);
+    print(user_id);
 
 
-
-     String fileName = myarr[0].split('/').last;
-     String fileName2 = myarr[1].split('/').last;
-    print('111233243424342342434');
-    print(myarr[0]);
-    print(myarr[1]);
-
-    print('dfsdfsdfgdfhfghgfhjhgjg');
-
+    String? fileName1 = imagefront?.split('/').last;
+    String? fileName2 = imageback?.split('/').last;
     MultipartFile? multipartFile, multipartFile1;
 
 
-    multipartFile =
-        await MultipartFile.fromFile(myarr[0].toString(), filename: myarr[0].split('/').last);
-    multipartFile1 =
-        await MultipartFile.fromFile(myarr[1].toString(), filename: myarr[1].split('/').last);
+    multipartFile = await MultipartFile.fromFile(imagefront!, filename: fileName1);
+
+    multipartFile1 = await MultipartFile.fromFile(imageback!, filename: fileName2);
+
 
     var dio = Dio();
     FormData data = FormData.fromMap({
       'file': [multipartFile, multipartFile1],
-      "scanImageBack": fileName,
-      "scanImageFront": fileName,
-      "scanAccntNo": "292547234753945345-34",
-      "scanBankNo": "292547234753945345-34",
+      "scanImageBack": fileName1,
+      "scanImageFront": fileName2,
+      "scanAccntNo": scanAccntNo,
+      "scanBankNo": scanBankNo,
+      "user": scanBankNo,
+      "user_id": user_id,
+
+
       "scanChequeNo": "1"
     });
 
+    int? res = 500;
+    try{
     var response = await dio.post('http://192.168.43.53:5000/api/scan/upload',
-        data: data, onSendProgress: (int sent, int total) {
+        data: data,
+
+        onSendProgress: (int sent, int total) {
       print('$sent $total');
     });
-    print(response.data);
+    print(response.statusCode);
+    return response.statusCode;
+
+
+  } on DioError catch (e) {
+ return res;
+ }
 
   }
 }

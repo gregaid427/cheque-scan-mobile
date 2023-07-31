@@ -1,18 +1,21 @@
 import 'dart:io';
 
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
+import 'package:cheque_scan/core/provider/Transactionsdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/ custom_appbar.dart';
 import '../../components/rounded_button.dart';
 import '../../constants/constants.dart';
 import '../chequefrontscan/front_cheque_scan.dart';
 import '../scan/scanpage2.dart';
-import '../transactions/transactions_preview.dart';
+import '../transactions/depositcheque.dart';
+//import '../transactions/transactions_preview.dart';
 import 'back_cheque_scan_model.dart';
 
 class BackScanPage extends StatefulWidget {
@@ -24,6 +27,8 @@ class BackScanPage extends StatefulWidget {
 }
 
 class _BackScanPageState extends State<BackScanPage> {
+  TransactionsData transactionsData = new TransactionsData();
+
   bool textScanning = false;
 
   XFile? imageFile;
@@ -64,7 +69,9 @@ class _BackScanPageState extends State<BackScanPage> {
         child: Column(
           children: [
             const CustomAppbar(),
-            const Text('Scan Back of Cheque', style: kTitleStyle),
+            const Text('Please endorse and scan back of cheque', style: kTitleStyle),
+            const Text('( Endorse with signature and date )', style: TextStyle(fontSize: 18, color: kPrimaryColor),),
+
             Expanded(
               child: Container(
                   margin:
@@ -250,13 +257,12 @@ class _BackScanPageState extends State<BackScanPage> {
                                   color: Colors.white,
                                   backgroundColor: kPrimaryColor,
                                   borderColor: kPrimaryColor,
-
                                   press: () {
                                     //  backscanModel.imageFile1 = imageFile;
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (_) => const TransactionsPreview(),
+                                        builder: (_) =>  DepositPreview(),
                                       ),
                                     );
                                   },
@@ -283,8 +289,11 @@ class _BackScanPageState extends State<BackScanPage> {
         textScanning = true;
         imageFile = pickedImage;
         String  value = imageFile!.path;
-        backscanModel.myarr.add(widget.frontimagevalue);
-        backscanModel.myarr.add(value);
+       // transactionsData.setBackImagelink(value);
+        Provider.of<TransactionsData>(context, listen: false).setBackImagelink(value);
+
+        // backscanModel.myarr.add(widget.frontimagevalue);
+        // backscanModel.myarr.add(value);
 
 
         setState(() {});

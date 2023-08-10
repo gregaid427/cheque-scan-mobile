@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 
 Map? serverD;
-List? decop;
+List? data;
 bool? load = false;
 
 class CardScrollView extends StatefulWidget {
@@ -43,7 +43,7 @@ class _CardScrollViewState extends State<CardScrollView> {
     print(response);
     if(response.statusCode == 200){
       serverD = json.decode(response.body);
-      decop = serverD?['data'];
+      data = serverD?['data'];
       print(serverD?['data']);
       setState(() {
         load = true;
@@ -55,19 +55,21 @@ class _CardScrollViewState extends State<CardScrollView> {
 
   @override
   Widget build(BuildContext context) {
-  //  print(decop?[1]["accountType"])  ;
+  //  print(data?[1]["accountType"])  ;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-             decop?.length == null ? 1 : decop!.length,
-              (index) => decop?.isEmpty != true ? HomeCard(
-            accountType: decop?.length == null ? '' : decop?[index]["accountType"].toString(),
-            accountNumber: decop?.length == null ? '' : decop?[index]["accountNumber"].toString(),
-            scanneedNumber: decop?.length == null ? '' :  decop?[index]["total_no_scan"].toString(),
-            TotalscanneedAmount: decop?.length == null ? '' : decop?[index]["accountType"].toString()
-          ):   HomeCardEmpty(),
+             data?.length == null ? 0 : data!.length,
+              (index) => data?.isEmpty != true ? HomeCard(
+            accountType: data?.length == null ? '' : data?[index]["accountType"].toString(),
+            accountNumber: data?.length == null ? '' : data?[index]["accountNumber"].toString(),
+            scanneedNumber: data?.length == null ? '1' :  data?[index]["total_no_scan"].toString(),
+            TotalscanneedAmount: '0'
+             //     TotalscanneedAmount: data?.length == null ? '' : data?[index]["accountType"].toString()
+
+        ):   HomeCardEmpty(),
         ),
       ),
     );

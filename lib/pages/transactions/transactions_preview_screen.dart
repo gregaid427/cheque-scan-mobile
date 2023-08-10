@@ -138,23 +138,23 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                                 )
                               ],
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Bank :  ',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 17)),
-                                Text(
-                                  Provider.of<TransactionsData>(context)
-                                      .getbank,
-                                  style: TextStyle(
-                                      color: Colors.deepOrange.shade400,
-                                      fontSize: 19),
-                                )
-                              ],
-                            ),
+                            // const SizedBox(
+                            //   height: 10,
+                            // ),
+                            // Row(
+                            //   children: [
+                            //     const Text('Bank :  ',
+                            //         style: TextStyle(
+                            //             color: Colors.grey, fontSize: 17)),
+                            //     Text(
+                            //       Provider.of<TransactionsData>(context)
+                            //           .getbank,
+                            //       style: TextStyle(
+                            //           color: Colors.deepOrange.shade400,
+                            //           fontSize: 19),
+                            //     )
+                            //   ],
+                            // ),
                             const SizedBox(
                               height: 10,
                             ),

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class CardScrollViewModel {
 
   Map? serverD;
-  List? decop;
+  List? data;
 
   Future Apicall1() async {
     http.Response response;
@@ -16,8 +16,8 @@ class CardScrollViewModel {
     if(response.statusCode == 200){
       print("called");
       serverD = json.decode(response.body);
-      decop = serverD?['data'];
-return decop;
+      data = serverD?['data'];
+return data;
       // setState(() {
       //   serverD = json.decode(response.body);
       // });

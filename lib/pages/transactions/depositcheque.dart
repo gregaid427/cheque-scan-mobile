@@ -30,7 +30,7 @@ class DepositPreview extends StatefulWidget with ChangeNotifier {
 }
 
 Map? serverD;
-List? decop;
+List? data;
 bool? load = false;
 String dropdownValue = "Select Account";
 
@@ -60,7 +60,7 @@ class _DepositPreviewState extends State<DepositPreview> {
     if (response.statusCode == 200) {
 
       serverD = json.decode(response.body);
-      decop = serverD?['data'];
+      data = serverD?['data'];
       print(serverD?['data']);
       setState(() {
         load = true;
@@ -70,7 +70,7 @@ class _DepositPreviewState extends State<DepositPreview> {
   }
 
 
-  String gender = "male";
+  String Type = "Express";
 
   @override
   Widget build(BuildContext context) {
@@ -174,8 +174,8 @@ class _DepositPreviewState extends State<DepositPreview> {
                               scrollDirection: Axis.vertical,
                               child: Column(
                                 children: List.generate(
-                                  decop?.length == null ? 1 : decop!.length,
-                                  (index) => decop?.length != null
+                                  data?.length == null ? 1 : data!.length,
+                                  (index) => data?.length != null
                                       ? GestureDetector(
                                           onTap: () {
                                             setState(() {
@@ -188,7 +188,7 @@ class _DepositPreviewState extends State<DepositPreview> {
                                             Provider.of<TransactionsData>(
                                                     context,
                                                     listen: false)
-                                                .setChosenAccount(decop![index]
+                                                .setChosenAccount(data![index]
                                                         ["accountNumber"]
                                                     .toString());
 
@@ -196,18 +196,18 @@ class _DepositPreviewState extends State<DepositPreview> {
                                                     context,
                                                     listen: false)
                                                 .setChosenAccountType(
-                                                    decop![index]["accountType"]
+                                                    data![index]["accountType"]
                                                         .toString());
 
                                             Provider.of<TransactionsData>(
                                                     context,
                                                     listen: false)
-                                                .setbank(decop![index]["bank"]
+                                                .setbank(data![index]["bank"]
                                                     .toString());
 
                                             setState(() {
-                                              dropdownValue = "${decop![index]
-                                                          ["accountNumber"]} (${decop![index]["accountName"]
+                                              dropdownValue = "${data![index]
+                                                          ["accountNumber"]} (${data![index]["accountName"]
                                                       .toString()
                                                       .substring(0, 4)})";
                                             });
@@ -215,7 +215,7 @@ class _DepositPreviewState extends State<DepositPreview> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                "${decop![index]["accountNumber"]} (${decop![index]["accountName"]})",
+                                                "${data![index]["accountNumber"]} (${data![index]["accountName"]})",
                                                 style: TextStyle(fontSize: 19),
                                               ),
                                               Divider()
@@ -297,11 +297,11 @@ class _DepositPreviewState extends State<DepositPreview> {
                     const Text('Express',
                         style: TextStyle(fontSize: 19, color: Colors.orange)),
                     Radio(
-                        value: 'male',
-                        groupValue: gender,
+                        value: 'Express',
+                        groupValue: Type,
                         onChanged: (value) {
                           setState(() {
-                            gender = value!.toString();
+                            Type = value!.toString();
                           });
                           Provider.of<TransactionsData>(context, listen: false)
                               .setTransferType("Express");
@@ -314,11 +314,11 @@ class _DepositPreviewState extends State<DepositPreview> {
                     const Text('Normal',
                         style: TextStyle(fontSize: 19, color: Colors.orange)),
                     Radio(
-                        value: 'female',
-                        groupValue: gender,
+                        value: 'Normal',
+                        groupValue: Type,
                         onChanged: (value) {
                           setState(() {
-                            gender = value!.toString();
+                            Type = value!.toString();
                           });
                           Provider.of<TransactionsData>(context, listen: false)
                               .setTransferType("Normal");

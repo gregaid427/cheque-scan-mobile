@@ -63,8 +63,8 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-     home:OtpScreen(),
-   //   home: SafeArea(child:  status == 2 ? OtpScreen()  :  LoginScreen())
+    // home:OtpScreen(),
+      home: SafeArea(child:  status == 2 ? OtpScreen()  :  LoginScreen())
 
     );
   }

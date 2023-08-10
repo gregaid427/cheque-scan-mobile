@@ -24,6 +24,8 @@ class _OtpScreenState extends State<OtpScreen> {
   var onTapRecognizer;
 
   bool hasError = false;
+  bool hasError1 = false;
+
   String currentText = "";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -133,7 +135,18 @@ class _OtpScreenState extends State<OtpScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 // error showing widget
                 child: Text(
-                  hasError ? "*Please fill up all the cells properly" : "",
+                  hasError ? "Fill up all the cells properly" : "",textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.red.shade300,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                // error showing widget
+                child: Text(
+                  hasError1 ? "Incorrect Pin" : "", textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.red.shade300,
                     fontSize: 15,
@@ -204,11 +217,20 @@ class _OtpScreenState extends State<OtpScreen> {
             hasError = true;
           });
         } else {
+      if( currentText != pin ) {
+        setState(() {
+          hasError1 = true;
+          hasError = false;
 
+        });
+      }
       if( currentText == pin ){
+        setState(() {
+          hasError = false;
+          hasError1 = false;
 
+        });
         print('correct pin');
-
        // userPreferences.setUserStatus(2);
             Navigator.pushReplacement(
             context,
@@ -216,9 +238,7 @@ class _OtpScreenState extends State<OtpScreen> {
       }
 
     }
-          setState(() {
-            hasError = false;
-          });
+
 
   }
 

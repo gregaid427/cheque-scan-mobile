@@ -3,13 +3,16 @@ import 'package:cheque_scan/pages/authentication/sign_up/sign_up_view_model.dart
 import 'package:cheque_scan/pages/introduction_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../auth/api_client.dart';
+import '../../../auth/shared_preference.dart';
 import '../../../auth/validator.dart';
 import '../../../components/rounded_button.dart';
 import '../../../constants/constants.dart';
 import '../../../core/custom_textfield.dart';
 import '../../../core/enums/textfield_type.dart';
+import '../otp/otp_screen.dart';
 import '../sign_in/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -63,16 +66,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       dynamic res = await _apiClient.registerUser(userData);
 
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      if (res['success'] == 1) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
-      }
-      else {
+
+      UserPreferences userPreferences = UserPreferences();
+      userPreferences.setUserStatus(1);
+
+      print(res['userPin']);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('otpCode', res['userPin'].toString());
+
+      if (res == 'Connection Error') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: Unable to create account - ${res['message']}'),
+        //  content: Text('Error: Unable to create account - ${res['message']}'),
+          content: Text('Error: Unable to create account '),
+
           backgroundColor: Colors.red.shade300,
         ));
       }
+      if (res['success'] == 1) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => OtpScreen()));
+      }
+
     }
   }
 

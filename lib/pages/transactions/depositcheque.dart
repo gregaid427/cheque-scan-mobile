@@ -5,6 +5,7 @@ import 'package:cheque_scan/pages/transactions/transactions_preview_screen.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/ custom_appbar.dart';
 import '../../components/home_card.dart';
@@ -17,6 +18,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 enum TransferType { Express, Normal }
+bool? ShowErrorText ;
+bool? ShowErrorText1 = true;
+
 
 class DepositPreview extends StatefulWidget with ChangeNotifier {
   DepositPreview({Key? key}) : super(key: key);
@@ -47,13 +51,14 @@ class _DepositPreviewState extends State<DepositPreview> {
 
 
   Future Apicall() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userid = prefs.getString("user_id");
     http.Response response;
     response = await http
-        .get(Uri.parse("http://192.168.43.53:5000/api/linkedaccounts/1"));
+        .get(Uri.parse("http://192.168.43.53:5000/api/linkedaccounts/$userid"));
     print(response);
     if (response.statusCode == 200) {
-      print(
-          "calledooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+
       serverD = json.decode(response.body);
       decop = serverD?['data'];
       print(serverD?['data']);
@@ -66,7 +71,6 @@ class _DepositPreviewState extends State<DepositPreview> {
 
 
   String gender = "male";
-  bool ShowErrorText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -175,8 +179,12 @@ class _DepositPreviewState extends State<DepositPreview> {
                                       ? GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              ShowErrorText = false;
+                                              ShowErrorText1 = false;
+                                              ShowErrorText = true;
+
                                             });
+                                            Navigator.pop(context);
+
                                             Provider.of<TransactionsData>(
                                                     context,
                                                     listen: false)
@@ -201,9 +209,8 @@ class _DepositPreviewState extends State<DepositPreview> {
                                               dropdownValue = "${decop![index]
                                                           ["accountNumber"]} (${decop![index]["accountName"]
                                                       .toString()
-                                                      .substring(0, 10)})";
+                                                      .substring(0, 4)})";
                                             });
-                                            Navigator.pop(context);
                                           },
                                           child: Column(
                                             children: [
@@ -241,9 +248,8 @@ class _DepositPreviewState extends State<DepositPreview> {
                       padding: EdgeInsets.all(5.0),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
-                          border: ShowErrorText == false
-                              ? Border.all(color: Colors.black45)
-                              : Border.all(color: Colors.red)),
+                          border: Border.all(color: Colors.black45),
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -265,7 +271,7 @@ class _DepositPreviewState extends State<DepositPreview> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    if (ShowErrorText == true)
+                    if (ShowErrorText1 == true)
                       const Text(
                         "Select an Account to Continue",
                         style: TextStyle(color: Colors.red),
@@ -328,31 +334,34 @@ class _DepositPreviewState extends State<DepositPreview> {
                     backgroundColor: kPrimaryColor,
                     borderColor: kPrimaryColor,
                     press: () {
-                      String? ChosenAccount =
-                          Provider.of<TransactionsData>(context, listen: false)
-                              .getchosenAccount;
+                      // String? ChosenAccount =
+                      //     Provider.of<TransactionsData>(context, listen: false)
+                      //         .getchosenAccount;
 
-                      print(ChosenAccount);
 
-                      if (ChosenAccount == '') {
+                      if ( ShowErrorText == null) {
                         setState(() {
-                          ShowErrorText = true;
+                          ShowErrorText1 = true;
                         });
+                        print("ShowErrorText");
+
                       } else {
 
-                        setState(() {
-                          ShowErrorText = false;
-                        });
+                        // setState(() {
+                        //   ShowErrorText = false;
+                        // });
 
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
                             builder: (_) => const TransactionsPreviewScreen(),
                           ),
+
                         );
-                        // setState(() {
-                        //   dropdownValue = "Select Account";
-                        // });
+                        setState(() {
+                          ShowErrorText = null;
+                          ShowErrorText1 == true;
+                        });
                       }
                     },
                   ),

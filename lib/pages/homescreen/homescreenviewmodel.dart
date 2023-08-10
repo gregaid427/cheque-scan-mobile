@@ -11,45 +11,26 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreeViewModel {
 
-  void uploadImage1(File _image) async {
-
-    // open a byteStream
-    var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
-    // get file length
-    var length = await _image.length();
-
-    // string to uri
-    var uri = Uri.parse("enter here upload URL");
-
-    // create multipart request
-    var request = new http.MultipartRequest("POST", uri);
-
-    // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
-    request.fields["user_id"] = "text";
-    String fileName = _image!.path.split('/').last;
-
-    // multipart that takes file.. here this "image_file" is a key of the API request
-    var multipartFile = new http.MultipartFile('_image', stream, length, filename: fileName);
-
-    // add file to multipart
-    request.files.add(multipartFile);
-
-    // send request to upload image
-    await request.send().then((response) async {
-      // listen for response
-      response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-      });
-
-    }).catchError((e) {
-      print(e);
-    });
+  api() async{
+    http.Response response;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userid = prefs.getString("user_id");
+    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/Transactions/$userid"));
+    List? data;
+    if(response.statusCode == 200){
+      var serverData = json.decode(response.body);
+      data = serverData?['data'];
+      print(data);
+      return data;
+    }
+    else{
+      return 'error';
+    }
   }
-
-
 
 
   static String Trimstring(string) {

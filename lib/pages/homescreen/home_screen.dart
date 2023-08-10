@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../auth/shared_preference.dart';
 import '../../components/ custom_appbar.dart';
 import '../../constants/constants.dart';
 import '../chequefrontscan/front_cheque_scan.dart';
@@ -31,6 +32,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 
 }
+UserPreferences userPreferences = UserPreferences();
 
 
 
@@ -41,6 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     CardScrollViewModel cardScrollViewModel = CardScrollViewModel();
 
+    void initState() {
+
+      userPreferences.setUserStatus(2);
+      super.initState();
+    }
 
     return SafeArea(
       child: Scaffold(

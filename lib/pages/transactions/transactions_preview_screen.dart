@@ -40,7 +40,6 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
     String? lastName = prefs.getString("lastName");
     String? userid = prefs.getString("user_id");
 
-
     setState(() {
       name = "$firstName $otherName $lastName";
       user_id =  userid!;
@@ -291,13 +290,17 @@ class _ConfimButtonState extends State<ConfimButton> {
     return Expanded(
       child: InkWell(
         onTap: () async {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? userid = prefs.getString("user_id");
           int? response = await backscanModel.uploadImage(
               imagefront: frontLink,
               imageback: backLink,
-
-              user_id: "1",
-
+              user_id: userid,
               scanAccntNo: scanAccntNo,
+              amount: '23,000',
+              account_id: '23,000',
+
+
               scanBankNo: scanBankNo);
           if (response == 200) {
             SuccessAlert();

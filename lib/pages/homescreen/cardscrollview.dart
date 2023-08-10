@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/home_card.dart';
 import 'cardScrollview_model.dart';
@@ -34,11 +35,13 @@ class _CardScrollViewState extends State<CardScrollView> {
   }
 
   Future Apicall() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userid = prefs.getString("user_id");
+
     http.Response response;
-    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/linkedaccounts/1"));
+    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/linkedaccounts/$userid"));
     print(response);
     if(response.statusCode == 200){
-      print("calledooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
       serverD = json.decode(response.body);
       decop = serverD?['data'];
       print(serverD?['data']);
@@ -52,14 +55,14 @@ class _CardScrollViewState extends State<CardScrollView> {
 
   @override
   Widget build(BuildContext context) {
-    print(decop?[1]["accountType"])  ;
+  //  print(decop?[1]["accountType"])  ;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
              decop?.length == null ? 1 : decop!.length,
-              (index) => decop?.length != null ? HomeCard(
+              (index) => decop?.isEmpty != true ? HomeCard(
             accountType: decop?.length == null ? '' : decop?[index]["accountType"].toString(),
             accountNumber: decop?.length == null ? '' : decop?[index]["accountNumber"].toString(),
             scanneedNumber: decop?.length == null ? '' :  decop?[index]["total_no_scan"].toString(),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:cheque_scan/auth/validator.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/homescreen/home_screen.dart';
 import 'api_client.dart';
@@ -42,8 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
 
+
         print('correct credentials');
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => HomeScreen()));

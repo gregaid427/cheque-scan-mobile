@@ -2,6 +2,8 @@ import 'package:cheque_scan/pages/authentication/sign_in/sign_in_view_model.dart
 import 'package:cheque_scan/pages/introduction_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../../auth/api_client.dart';
 import '../../../auth/shared_preference.dart';
@@ -13,6 +15,8 @@ import '../../../core/custom_textfield.dart';
 import '../../../core/enums/textfield_type.dart';
 import '../../homescreen/home_screen.dart';
 import '../sign_up/signup_screen.dart';
+import 'package:stacked_services/stacked_services.dart';
+
 
 bool obscure = true;
 
@@ -54,13 +58,16 @@ class _LoginScreenState extends State<LoginScreen> {
         //persist user data by sharedpreferences
         _userPreferences.saveUserid(User_id!, accessToken);
         dynamic profileresponse =
-            await _apiClient.getUserProfileData(accessToken, User_id);
+        await _apiClient.getUserProfileData(accessToken, User_id);
         //persist user data by sharedpreferences
         if (profileresponse['success'] == 1) {
           var userData = profileresponse['data'];
           User authUser = User.fromJson(userData);
           UserPreferences().saveUser(authUser);
         }
+
+        UserPreferences userPreferences = UserPreferences();
+        userPreferences.setUserStatus(2);
 
         Navigator.push(
             context,
@@ -84,7 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ViewModelBuilder<SignInViewModel>.reactive(
+        builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
         body: Container(
           child: Column(children: [
@@ -200,6 +208,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   )),
             ),
           ]),
-        ));
+        )), viewModelBuilder: () =>  SignInViewModel(), );
   }
 }

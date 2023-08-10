@@ -13,7 +13,7 @@ class ApiClient {
   AppUrl appUrl = new AppUrl();
   Future<dynamic> registerUser(Map<String, dynamic>? data) async {
     try {
-      print(data);
+     // print(data);
       Response response = await _dio.post(
         AppUrl.register,
           data: data,

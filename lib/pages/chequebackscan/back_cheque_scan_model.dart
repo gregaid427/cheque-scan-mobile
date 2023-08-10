@@ -18,7 +18,7 @@ class BackscanModel {
   }
 
   String? imageFront ;
-  Future<int?> uploadImage({required imagefront,required imageback, required scanAccntNo, required scanBankNo, String? user_id}) async {
+  Future<int?> uploadImage({required imagefront,required imageback, required scanAccntNo, required scanBankNo, String? user_id, required String amount, required String account_id}) async {
     print("File Upload Called");
     print(imagefront);
     print(user_id);
@@ -43,8 +43,8 @@ class BackscanModel {
       "scanBankNo": scanBankNo,
       "user": scanBankNo,
       "user_id": user_id,
-
-
+      "issuer": "Issueroncheckscan",
+      "amount": amount,
       "scanChequeNo": "1"
     });
 

@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked/stacked.dart';
 import '../../../auth/shared_preference.dart';
 import '../../../constants/pagetransitions.dart';
 import '../../homescreen/home_screen.dart';
+import 'otp_view_model.dart';
 
 
 class OtpScreen extends StatefulWidget {
@@ -47,7 +49,8 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ViewModelBuilder<OtpViewModel>.reactive(
+        builder: (context, model, child) => Scaffold(
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -204,7 +207,7 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
         ),
       ),
-    );
+    ), viewModelBuilder: () => OtpViewModel() );
   }
 
   validateOtp()  async {

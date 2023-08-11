@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class SignupViewModel  {
+class SignupViewModel  extends ChangeNotifier{
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();

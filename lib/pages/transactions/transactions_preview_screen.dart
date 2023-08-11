@@ -16,7 +16,7 @@ import '../chequebackscan/back_cheque_scan_model.dart';
 String name = "";
 String user_id = "";
 
-BackscanModel backscanModel = new BackscanModel();
+BackscanViewModel backscanModel =  BackscanViewModel();
 
 class TransactionsPreviewScreen extends StatefulWidget {
   const TransactionsPreviewScreen({Key? key}) : super(key: key);

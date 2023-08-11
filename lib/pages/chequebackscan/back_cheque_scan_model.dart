@@ -1,5 +1,6 @@
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:http/http.dart' as http;
@@ -7,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/provider/Transactionsdata.dart';
 
-class BackscanModel {
+class BackscanViewModel extends ChangeNotifier{
 
  var myarr = [];
   void frontimage(String imageFile1) {

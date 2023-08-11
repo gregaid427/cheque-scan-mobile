@@ -4,6 +4,7 @@ import 'package:cheque_scan/pages/introduction_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../../auth/api_client.dart';
 import '../../../auth/shared_preference.dart';
@@ -101,7 +102,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return ViewModelBuilder<SignupViewModel>.reactive(
+        builder: (context, model, child) => SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
           body: Container(
@@ -283,6 +285,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ]),
           )),
-    );
+    ), viewModelBuilder: () => SignupViewModel() );
   }
 }

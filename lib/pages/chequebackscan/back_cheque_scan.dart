@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../components/ custom_appbar.dart';
 import '../../components/rounded_button.dart';
@@ -34,7 +35,7 @@ class _BackScanPageState extends State<BackScanPage> {
   XFile? imageFile;
   bool showNext = false;
   String scannedText = "";
-  BackscanModel backscanModel =new BackscanModel();
+  BackscanViewModel backscanModel = BackscanViewModel();
   @override
   Widget build(BuildContext context) {
     Future<void> _showMyDialog1() async {
@@ -64,7 +65,8 @@ class _BackScanPageState extends State<BackScanPage> {
       );
     }
 
-    return Scaffold(
+    return ViewModelBuilder<BackscanViewModel>.reactive(
+        builder: (context, model, child) => Scaffold(
       body: SafeArea(
         child: Column(
           children: [
@@ -279,7 +281,7 @@ class _BackScanPageState extends State<BackScanPage> {
           ],
         ),
       ),
-    );
+    ), viewModelBuilder: ()=> BackscanViewModel());
   }
 
   void getImage(ImageSource source) async {

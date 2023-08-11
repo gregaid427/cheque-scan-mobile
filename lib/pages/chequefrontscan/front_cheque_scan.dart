@@ -32,7 +32,7 @@ class _FrontScanPageState extends State<FrontScanPage> {
   XFile? imageFile;
   bool showNext = false;
   String scannedText = "";
-  BackscanModel backscanModel =new BackscanModel();
+  BackscanViewModel backscanModel = BackscanViewModel();
 
 
   @override

@@ -1,9 +1,11 @@
 import 'package:cheque_scan/pages/homescreen/home_screen.dart';
+import 'package:cheque_scan/pages/transactions/transactionPreviewModel.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../auth/user.dart';
 import '../../components/ custom_appbar.dart';
@@ -48,7 +50,8 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ViewModelBuilder<TransactionPreviewModel>.reactive(
+        builder: (context, model, child) => Scaffold(
       body: SafeArea(
         child: Column(
           children: [
@@ -213,7 +216,7 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
           ],
         ),
       ),
-    );
+    ), viewModelBuilder: ()=>TransactionPreviewModel(),);
   }
 }
 

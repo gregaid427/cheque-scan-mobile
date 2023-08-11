@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../components/ custom_appbar.dart';
 import '../../components/home_card.dart';
@@ -16,6 +17,8 @@ import '../homescreen/cardscrollview.dart';
 import '../scan/scanpage2.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import 'depositChequeModel.dart';
 
 enum TransferType { Express, Normal }
 bool? ShowErrorText ;
@@ -76,7 +79,8 @@ class _DepositPreviewState extends State<DepositPreview> {
   Widget build(BuildContext context) {
     TransferType? _transferType = TransferType.Express;
 
-    return Scaffold(
+    return ViewModelBuilder<DepositChequeViewModel>.reactive(
+        builder: (context, model, child) => Scaffold(
         body: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: SafeArea(
@@ -371,6 +375,6 @@ class _DepositPreviewState extends State<DepositPreview> {
           ),
         ])))
       ])),
-    ));
+    )), viewModelBuilder: () => DepositChequeViewModel(),);
   }
 }

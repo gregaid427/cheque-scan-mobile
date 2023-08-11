@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
 import 'package:cheque_scan/core/provider/Transactionsdata.dart';
 import 'package:cheque_scan/pages/chequebackscan/back_cheque_scan.dart';
+import 'package:cheque_scan/pages/chequefrontscan/frontChequeScanModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../components/ custom_appbar.dart';
 import '../../components/rounded_button.dart';
@@ -38,7 +40,8 @@ class _FrontScanPageState extends State<FrontScanPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return ViewModelBuilder<FrontChequeScanViewModel>.reactive(
+        builder: (context, model, child) => Scaffold(
       body: SafeArea(
         child: Column(
           children: [
@@ -251,7 +254,7 @@ class _FrontScanPageState extends State<FrontScanPage> {
           ],
         ),
       ),
-    );
+    ), viewModelBuilder: ()=> FrontChequeScanViewModel(),);
   }
 
   void getImage(ImageSource source) async {

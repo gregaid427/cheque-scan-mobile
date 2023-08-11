@@ -65,9 +65,8 @@ class _CardScrollViewState extends State<CardScrollView> {
               (index) => data?.isEmpty != true ? HomeCard(
             accountType: data?.length == null ? '' : data?[index]["accountType"].toString(),
             accountNumber: data?.length == null ? '' : data?[index]["accountNumber"].toString(),
-            scanneedNumber: data?.length == null ? '1' :  data?[index]["total_no_scan"].toString(),
-            TotalscanneedAmount: '0'
-             //     TotalscanneedAmount: data?.length == null ? '' : data?[index]["accountType"].toString()
+            scanneedNumber: data?.length == null ? '' :  data?[index]["total_no_scan"].toString(),
+            TotalscanneedAmount: data?.length == null ? '' : data?[index]["total_no_scan"].toString()
 
         ):   HomeCardEmpty(),
         ),

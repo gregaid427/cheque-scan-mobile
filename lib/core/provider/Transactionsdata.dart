@@ -5,6 +5,7 @@ class TransactionsData extends ChangeNotifier {
   String? _frontImagelink;
   String? _backImagelink;
   String? _chosenAccount;
+  String? _chosenAccountid;
   String? _transferType = "Express";
   String? _accountType;
   String? _bank;
@@ -14,6 +15,7 @@ class TransactionsData extends ChangeNotifier {
   get getfrontImagelink => _frontImagelink;
   get getbackImagelink => _backImagelink;
   get getchosenAccount => _chosenAccount;
+  get getchosenAccountid => _chosenAccountid;
   get getTransferType => _transferType;
   get getaccountType => _accountType;
   get getbank => _bank;
@@ -46,6 +48,12 @@ class TransactionsData extends ChangeNotifier {
   void setChosenAccount(String value){
     print('account is set');
     _chosenAccount = value;
+    notifyListeners();
+
+  }
+
+  void setChosenAccountid(String value){
+    _chosenAccountid = value;
     notifyListeners();
 
   }

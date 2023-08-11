@@ -59,7 +59,7 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
             const Expanded(
                 child: Text('Transaction Preview', style: kTitleStyle)),
             Expanded(
-                flex: 7,
+                flex: 9,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
@@ -100,7 +100,11 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height: 40,
+                          height: 10,
+                        ),
+                        Divider(),
+                        const SizedBox(
+                          height: 10,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,9 +115,9 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                                     color: Colors.deepOrange.shade400,
                                     fontSize: 20)),
                             const SizedBox(height: 13),
-                            Row(
+                            Column(crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Name :  ',
+                                const Text('Name:',
                                     style: TextStyle(
                                         color: Colors.grey, fontSize: 17)),
                                 Text(
@@ -127,9 +131,9 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
+                            Column(crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Account Type :  ',
+                                const Text('Account Type:',
                                     style: TextStyle(
                                         color: Colors.grey, fontSize: 17)),
                                 Text(
@@ -141,29 +145,29 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                                 )
                               ],
                             ),
-                            // const SizedBox(
-                            //   height: 10,
-                            // ),
-                            // Row(
-                            //   children: [
-                            //     const Text('Bank :  ',
-                            //         style: TextStyle(
-                            //             color: Colors.grey, fontSize: 17)),
-                            //     Text(
-                            //       Provider.of<TransactionsData>(context)
-                            //           .getbank,
-                            //       style: TextStyle(
-                            //           color: Colors.deepOrange.shade400,
-                            //           fontSize: 19),
-                            //     )
-                            //   ],
-                            // ),
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
+                            Column(crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Account Number :  ',
+                                const Text('Bank:',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 17)),
+                                Text(
+                                  Provider.of<TransactionsData>(context)
+                                      .getbank,
+                                  style: TextStyle(
+                                      color: Colors.deepOrange.shade400,
+                                      fontSize: 19),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Account Number:',
                                     style: TextStyle(
                                         color: Colors.grey, fontSize: 17)),
                                 Text(
@@ -177,9 +181,17 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                             ),
                           ],
                         ),
+
+
+
                         const SizedBox(
-                          height: 40,
+                          height: 10,
                         ),
+                        Divider(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,7 +199,7 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                             const Text('Amount',
                                 style: TextStyle(
                                     color: Colors.grey, fontSize: 17)),
-                            const SizedBox(height: 13),
+                            const SizedBox(height: 5),
                             Text('GHS 13,000,000.00',
                                 style: TextStyle(
                                     color: Colors.deepOrange.shade400,

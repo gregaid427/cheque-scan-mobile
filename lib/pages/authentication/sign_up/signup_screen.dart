@@ -71,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       UserPreferences userPreferences = UserPreferences();
       userPreferences.setUserStatus(1);
 
-      print(res['userPin']);
+     // print(res['userPin']);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('otpCode', res['userPin'].toString());
 

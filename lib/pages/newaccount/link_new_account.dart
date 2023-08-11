@@ -117,7 +117,7 @@ class LinkNewAccount extends StatelessWidget {
                                   CustomTextField1(
                                     hintText: '',
                                     obscure: false,
-                                    type: TextFieldType.name,
+                                   // type: TextFieldType.name,
                                     inputType: TextInputType.text,
                                     onChanged: (value){_createAccountModel.accountName = value; },
 

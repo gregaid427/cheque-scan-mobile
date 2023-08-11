@@ -23,8 +23,8 @@ Future<void> main() async {
         create: (BuildContext context) => TransactionsData()),
   ], child: const MyApp()));
 
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  status =   prefs.getInt('userAppStatus');
+  // final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // status =   prefs.getInt('userAppStatus');
 
 }
 
@@ -38,10 +38,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+gett() async{
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  status =   prefs.getInt('userAppStatus');
+  print(status);
+
+}
 
   void initState() {
     //getUserStatus();
   //  CheckUserAppStatus();
+    gett();
     print(status);
     super.initState();
   }
@@ -58,13 +65,15 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print(status);
+
     return MaterialApp(
      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
     // home:OtpScreen(),
-      home: SafeArea(child:  status == 2 ? OtpScreen()  :  LoginScreen())
+      home: SafeArea(child:  status == 1 ? OtpScreen()  :  LoginScreen())
 
     );
   }

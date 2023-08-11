@@ -19,7 +19,7 @@ class HomeScreeViewModel {
     http.Response response;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userid = prefs.getString("user_id");
-    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/scan/$userid"));
+    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/transactions/$userid"));
     List? data;
     if(response.statusCode == 200){
       var serverData = json.decode(response.body);

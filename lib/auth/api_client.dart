@@ -9,7 +9,8 @@ import '../constants/app_url.dart';
 //var accesstoken =  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXN1bHQiOiIyNzdAZ21haWwuY29tIiwiaWF0IjoxNjg5ODU1MDU4fQ.RH7fiMmCUk5wqz7RHzeuifoK96PrKCa4BJZPP3smCBo'
 
 class ApiClient {
-  final Dio _dio = Dio();
+  var _dio = Dio(BaseOptions(connectTimeout: Duration(seconds: 7)));
+
   AppUrl appUrl = new AppUrl();
   Future<dynamic> registerUser(Map<String, dynamic>? data) async {
     try {
@@ -53,16 +54,7 @@ class ApiClient {
           headers: {'Authorization': 'Bearer $accessToken'},
         ),
       );
-//////
-//       final Map<String, dynamic> responseData = json.decode(response.data);
-//       var userData = responseData['data'];
-//       User authUser = User.fromJson(userData);
-//       //persist data
-//       final UserPreferences _userPreferences = UserPreferences();
-//       _userPreferences.saveUser(authUser);
-
-print('response');
-print(response.data);
+      print(response.data);
       return response.data;
     } on DioError catch (e) {
       return e.response!.data;

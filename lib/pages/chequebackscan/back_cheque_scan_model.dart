@@ -34,8 +34,10 @@ class BackscanViewModel extends ChangeNotifier{
 
     multipartFile1 = await MultipartFile.fromFile(imageback!, filename: fileName2);
 
+    //final _dio = Dio(BaseOptions(connectTimeout: 50000));
 
-    var dio = Dio();
+
+    var dio = Dio(BaseOptions(connectTimeout: Duration(seconds: 10)));
     FormData data = FormData.fromMap({
       'file': [multipartFile, multipartFile1],
       "scanImageBack": fileName1,

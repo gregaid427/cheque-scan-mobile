@@ -1,14 +1,23 @@
 
+import 'package:camera_camera/camera_camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/provider/Transactionsdata.dart';
 
 class BackscanViewModel extends ChangeNotifier{
+
+  bool textScanning = false;
+
+  XFile? imageFile;
+  bool showNext = false;
+  String scannedText = "";
 
  var myarr = [];
   void frontimage(String imageFile1) {
@@ -66,4 +75,59 @@ class BackscanViewModel extends ChangeNotifier{
  }
 
   }
+ void getImage(ImageSource source,context) async {
+   try {
+     final pickedImage = await ImagePicker().pickImage(source: source);
+     if (pickedImage != null) {
+       textScanning = true;
+       notifyListeners();
+       imageFile = pickedImage;
+       notifyListeners();
+       String  value = imageFile!.path;
+       notifyListeners();
+       // transactionsData.setBackImagelink(value);
+       Provider.of<TransactionsData>(context, listen: false).setBackImagelink(value);
+
+       // backscanModel.myarr.add(widget.frontimagevalue);
+       // backscanModel.myarr.add(value);
+
+
+       getRecognisedText(pickedImage);
+       notifyListeners();
+       print("pickedImage");
+       print(pickedImage.name);
+     }
+   } catch (e) {
+     textScanning = false;
+     notifyListeners();
+     imageFile = null;
+     notifyListeners();
+     scannedText = "Error occured while scanning";
+     notifyListeners();
+   }
+ }
+
+
+ void getRecognisedText(XFile image) async {
+   final inputImage = InputImage.fromFilePath(image.path);
+   final textDetector = GoogleMlKit.vision.textDetector();
+   RecognisedText recognisedText = await textDetector.processImage(inputImage);
+   await textDetector.close();
+   scannedText = "";
+   notifyListeners();
+   // for (TextBlock block in recognisedText.blocks) {
+   //   for (TextLine line in block.lines) {
+   //     scannedText = scannedText + line.text + "\n";
+   //   }
+   // }
+   textScanning = false;
+   notifyListeners();
+
+     showNext = true;
+     notifyListeners();
+ }
+
+
+
+
 }

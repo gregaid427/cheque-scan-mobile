@@ -1,5 +1,5 @@
 import 'package:cheque_scan/pages/authentication/otp/otp_screen.dart';
-import 'package:cheque_scan/pages/authentication/sign_in/login_screen.dart';
+import 'package:cheque_scan/pages/authentication/sign_in/signin_screen.dart';
 import 'package:cheque_scan/pages/chequebackscan/back_cheque_scan.dart';
 import 'package:cheque_scan/pages/chequefrontscan/front_cheque_scan.dart';
 import 'package:cheque_scan/pages/homescreen/home_screen.dart';
@@ -7,6 +7,7 @@ import 'package:cheque_scan/pages/introduction_view.dart';
 import 'package:cheque_scan/pages/newaccount/link_new_account.dart';
 //import 'package:cheque_scan/pages/transactions/transactions_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -73,9 +74,10 @@ gett() async{
         primarySwatch: Colors.blue,
       ),
     // home:OtpScreen(),
-      home: SafeArea(child:  status == 1 ? OtpScreen()  :  LoginScreen())
-
+      home: SafeArea(child:  status == 1 ? OtpScreen()  :  LoginScreen()),
+        builder: EasyLoading.init(),
     );
+
   }
 }
 

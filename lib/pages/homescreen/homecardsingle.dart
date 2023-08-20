@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked/stacked.dart';
 
+import '../../auth/api_client.dart';
 import '../../constants/api_service.dart';
 import 'datamodel.dart';
 import 'home_screen.dart';
@@ -32,7 +34,7 @@ class _SingleListItemState extends State<SingleListItem> {
 
   Future Apicall() async {
     HomeScreeViewModel homeScreeViewModel = HomeScreeViewModel();
-    data = await homeScreeViewModel.api();
+    //data = await homeScreeViewModel.api();
     setState(() {
       data = data;
     });
@@ -40,33 +42,60 @@ class _SingleListItemState extends State<SingleListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return ViewModelBuilder<HomeCardViewModel>.reactive(
+        onViewModelReady: (model) => model.ReadySetup(),
+    builder: (context, model, child) =>Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: data == null
+        child: model.data == null
             ? Container(padding: EdgeInsets.symmetric(vertical: 20),
           child: const Text('Loading history...'),
               ):
-        data?.isEmpty == true ? Container(padding: EdgeInsets.symmetric(vertical: 20),
+        model.data?.isEmpty == true  ? Container(padding: EdgeInsets.symmetric(vertical: 20),
           child: const Text('No transactions history'),
         )  : SingleChildScrollView(
                 child: Column(
                 children: [
                   ListView.builder(
                       physics: const NeverScrollableScrollPhysics(), //<--here
-                      itemCount: data == null ? 0 : data!.length,
+                      itemCount: model.data?.isEmpty == true ? 0 : model.data!.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return HistorySingleItem(
                           issuer: HomeScreeViewModel.Trimstring(
-                              data?[index]['issuer']),
+                              model.data?[index]['issuer']),
                           accountDeposited: HomeScreeViewModel.Trimstring(
-                              data?[index]['scanAccntNo'].toString()),
+                              model.data?[index]['scanAccntNo'].toString()),
                           amount: HomeScreeViewModel.Trimstring(
-                              data?[index]['amount'].toString()),
+                              model.data?[index]['amount'].toString()),
                         );
                       }),
                 ],
-              )));
+              ))), viewModelBuilder: ()=>HomeCardViewModel());
+  }
+}
+
+class HomeCardViewModel extends ChangeNotifier{
+
+
+
+  List? data;
+  bool? load = false;
+
+  void ReadySetup()async{
+    apicall();
+
+
+  }
+
+
+  void apicall()async{
+    ApiClient apiClient = ApiClient();
+    data = await apiClient.getTransactions() as List?;
+    notifyListeners();
+    print(data);
+
+    load = true;
+    notifyListeners();
   }
 }
 

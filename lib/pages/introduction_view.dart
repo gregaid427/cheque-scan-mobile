@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../components/rounded_button.dart';
 import '../constants/constants.dart';
-import 'authentication/sign_in/login_screen.dart';
+import 'authentication/sign_in/signin_screen.dart';
 
 
 

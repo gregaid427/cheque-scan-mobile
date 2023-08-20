@@ -2,10 +2,10 @@
 // import 'package:cheque_scan/auth/validator.dart';
 // import 'package:flutter/material.dart';
 //
-// import 'login_screen.dart';
+// import 'signin_screen.dart';
 // import 'api_client.dart';
 // // import 'package:loginradius_example/core/api_client.dart';
-// // import 'package:loginradius_example/screens/login_screen.dart';
+// // import 'package:loginradius_example/screens/signin_screen.dart';
 // // import 'package:loginradius_example/utils/validator.dart';
 //
 // class RegisterScreen extends StatefulWidget {

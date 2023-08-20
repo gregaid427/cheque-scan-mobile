@@ -29,11 +29,7 @@ String? scanimageFile;
 class _FrontScanPageState extends State<FrontScanPage> {
 
   TransactionsData transactionsData = TransactionsData();
-  bool textScanning = false;
 
-  XFile? imageFile;
-  bool showNext = false;
-  String scannedText = "";
   BackscanViewModel backscanModel = BackscanViewModel();
 
 
@@ -56,7 +52,7 @@ class _FrontScanPageState extends State<FrontScanPage> {
                     children: [
                       //     if ( imageFile != null) const CircularProgressIndicator(),
                       // if ( imageFile != null) const _showMyDialog1(),
-                      if (!textScanning && imageFile == null)
+                      if (!model.textScanning && model.imageFile == null)
                         Container(
                           width: 300,
                           height: 300,
@@ -65,11 +61,11 @@ class _FrontScanPageState extends State<FrontScanPage> {
                             // height: screenHeight * 0.22,
                           ),
                         ),
-                      if (!textScanning && imageFile == null)
+                      if (!model.textScanning && model.imageFile == null)
                         Spacer(),
 
 
-        if (!textScanning && imageFile == null)
+        if (!model.textScanning && model.imageFile == null)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -81,7 +77,7 @@ class _FrontScanPageState extends State<FrontScanPage> {
                                     backgroundColor: Colors.white,
                                     color: kPrimaryColor,
                                     borderColor: kPrimaryColor,
-                                    press: () => getImage(ImageSource.camera)),
+                                    press: () => model.getImage(ImageSource.camera,context)),
                               ),
                             ),
                             Expanded(
@@ -92,7 +88,7 @@ class _FrontScanPageState extends State<FrontScanPage> {
                                     backgroundColor: Colors.white,
                                     color: kPrimaryColor,
                                     borderColor: kPrimaryColor,
-                                    press: () => getImage(ImageSource.gallery)),
+                                    press: () => model.getImage(ImageSource.gallery,context)),
                               ),
                             ),
                           ],
@@ -101,15 +97,15 @@ class _FrontScanPageState extends State<FrontScanPage> {
                       // if (imageFile == null)
                       //   SpinKitChasingDots(),
 
-                      if (imageFile != null)
+                      if (model.imageFile != null)
                         Container(
-                            child: showNext != true
+                            child: model.showNext != true
                                 ? const Padding(
                               padding: EdgeInsets.only(top: 100.0),
                               child: CircularProgressIndicator(),
                             )
                                 : Expanded(
-                                child: Image.file(File(imageFile!.path)))),
+                                child: Image.file(File(model.imageFile!.path)))),
                       //
 
                       const SizedBox(
@@ -124,7 +120,7 @@ class _FrontScanPageState extends State<FrontScanPage> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
-                          child: showNext != true
+                          child: model.showNext != true
                               ? null
                               : Row(
                             children: [
@@ -157,8 +153,8 @@ class _FrontScanPageState extends State<FrontScanPage> {
                                                   onTap: () {
                                                     Navigator.of(context)
                                                         .pop();
-                                                    getImage(
-                                                        ImageSource.camera);
+                                                    model.getImage(
+                                                        ImageSource.camera,context);
                                                   },
                                                   child: Container(
                                                     width: double.infinity,
@@ -184,8 +180,8 @@ class _FrontScanPageState extends State<FrontScanPage> {
                                                   onTap: () {
                                                     Navigator.of(context)
                                                         .pop();
-                                                    getImage(ImageSource
-                                                        .gallery);
+                                                    model.getImage(ImageSource
+                                                        .gallery,context);
                                                   },
                                                   child: Container(
                                                     width: double.infinity,
@@ -257,55 +253,7 @@ class _FrontScanPageState extends State<FrontScanPage> {
     ), viewModelBuilder: ()=> FrontChequeScanViewModel(),);
   }
 
-  void getImage(ImageSource source) async {
-    try {
-      final pickedImage = await ImagePicker().pickImage(source: source);
-      if (pickedImage != null) {
-        textScanning = true;
-        imageFile = pickedImage;
-        String  value = imageFile!.path;
-        Provider.of<TransactionsData>(context, listen: false).setfrontImagelink(value);
 
-      //  transactionsData.setfrontImagelink(value);
-        backscanModel.frontimage(imageFile!.path);
-       // backscanModel.imageFile1 = File(pickedImage!.path);
-       // backscanModel.myarr.add(value);
-
-
-        setState(() {
-          scanimageFile = pickedImage!.path;
-
-        });
-        getRecognisedText(pickedImage);
-        print("pickedImage");
-
-        print(pickedImage.name);
-      }
-    } catch (e) {
-      textScanning = false;
-      imageFile = null;
-      scannedText = "Error occured while scanning";
-      setState(() {});
-    }
-  }
-
-  void getRecognisedText(XFile image) async {
-    final inputImage = InputImage.fromFilePath(image.path);
-    final textDetector = GoogleMlKit.vision.textDetector();
-    RecognisedText recognisedText = await textDetector.processImage(inputImage);
-    await textDetector.close();
-    scannedText = "";
-    for (TextBlock block in recognisedText.blocks) {
-      for (TextLine line in block.lines) {
-        scannedText = scannedText + line.text + "\n";
-      }
-    }
-    print(scannedText);
-    setState(() {
-      textScanning = false;
-      showNext = true;
-    });
-  }
 
   @override
   void initState() {

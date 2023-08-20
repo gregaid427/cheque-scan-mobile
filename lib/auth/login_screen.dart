@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
       dynamic res = await _apiClient.login(
         emailController.text,
         passwordController.text,
+          context
       );
 
       ScaffoldMessenger.of(context).hideCurrentSnackBar();

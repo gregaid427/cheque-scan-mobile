@@ -13,24 +13,9 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreeViewModel {
+import '../../constants/api_client.dart';
 
-  api() async{
-    http.Response response;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userid = prefs.getString("user_id");
-    response = await http.get(Uri.parse("http://192.168.43.53:5000/api/transactions/$userid"));
-    List? data;
-    if(response.statusCode == 200){
-      var serverData = json.decode(response.body);
-      data = serverData?['data'];
-      print(data);
-      return data;
-    }
-    else{
-      return 'error';
-    }
-  }
+class HomeScreeViewModel extends ChangeNotifier {
 
 
   static String Trimstring(string) {

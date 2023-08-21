@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:cheque_scan/auth/user.dart';
+import 'package:cheque_scan/constants/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {

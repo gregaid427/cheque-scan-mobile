@@ -1,6 +1,9 @@
-import 'dart:io';
 
 //import 'package:cheque_scan/pages/transactions/transactions_preview.dart';
+import 'dart:io';
+//import 'dart:js_interop';
+
+import 'package:cheque_scan/constants/api_client.dart';
 import 'package:cheque_scan/pages/transactions/transactions_preview_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +26,6 @@ import 'depositChequeModel.dart';
 
 enum TransferType { Express, Normal }
 
-bool? ShowErrorText;
-bool? ShowErrorText1 = true;
 
 class DepositPreview extends StatefulWidget with ChangeNotifier {
   DepositPreview({Key? key}) : super(key: key);
@@ -33,51 +34,25 @@ class DepositPreview extends StatefulWidget with ChangeNotifier {
   State<DepositPreview> createState() => _DepositPreviewState();
 }
 
-Map? serverD;
-List? data;
-bool? load = false;
-String dropdownValue = "Select Account";
+
 
 TransactionsData transactionsData = TransactionsData();
 
+
 class _DepositPreviewState extends State<DepositPreview> {
   void initState() {
-    Apicall();
-    resetdropdown();
     super.initState();
-  }
-
-  void resetdropdown() {
-    setState(() {
-      dropdownValue = "Select Account";
-    });
-  }
-
-  Future Apicall() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userid = prefs.getString("user_id");
-    http.Response response;
-    response = await http
-        .get(Uri.parse("http://192.168.43.53:5000/api/linkedaccounts/$userid"));
-    print(response);
-    if (response.statusCode == 200) {
-      serverD = json.decode(response.body);
-      data = serverD?['data'];
-      print(serverD?['data']);
-      setState(() {
-        load = true;
-        serverD = json.decode(response.body);
-      });
-    }
   }
 
   String Type = "Express";
 
+
+
   @override
   Widget build(BuildContext context) {
-    TransferType? _transferType = TransferType.Express;
 
     return ViewModelBuilder<DepositChequeViewModel>.reactive(
+      onViewModelReady: (model) => model.ReadySetup(),
       builder: (context, model, child) => Scaffold(
           body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -191,54 +166,58 @@ class _DepositPreviewState extends State<DepositPreview> {
                             Expanded(
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
-                                child: Column(
+                                child: model.getdatalength() ? Column(
                                   children: List.generate(
-                                    data?.length != null ? 1 : data!.length,
-                                    (index) => data?.length != null
-                                        ? GestureDetector(
+
+                                     model.data!.length,
+                                    (index) =>
+                                         GestureDetector(
                                             onTap: () {
-                                              setState(() {
-                                                ShowErrorText1 = false;
-                                                ShowErrorText = true;
+
+
+                                            setState(() {
+                                                model.ShowErrorText1 = false;
+                                                model.ShowErrorText = true;
                                               });
                                               Navigator.pop(context);
 
                                               Provider.of<TransactionsData>(
                                                       context,
                                                       listen: false)
-                                                  .setChosenAccount(data![index]
+                                                  .setChosenAccount(model.data![index]
                                                           ["accountNumber"]
                                                       .toString());
                                               Provider.of<TransactionsData>(
                                                       context,
                                                       listen: false)
                                                   .setChosenAccountid(
-                                                      data![index]["accountid"]
+                                                      model.data![index]["accountid"]
                                                           .toString());
 
                                               Provider.of<TransactionsData>(
                                                       context,
                                                       listen: false)
                                                   .setChosenAccountType(
-                                                      data![index]
+                                                      model.data![index]
                                                               ["accountType"]
                                                           .toString());
 
                                               Provider.of<TransactionsData>(
                                                       context,
                                                       listen: false)
-                                                  .setbank(data![index]["bank"]
+                                                  .setbank(model.data![index]["bank"]
                                                       .toString());
 
                                               setState(() {
-                                                dropdownValue =
-                                                    "${data![index]["accountNumber"].toString().substring(0, 10)} (${data![index]["accountName"].toString().substring(0, 8)})";
+                                                model.setdropdown("${model.data![index]["accountNumber"].toString().substring(0, 10)} (${model.data![index]["accountName"].toString().substring(0, 8)})");
+
                                               });
                                             },
                                             child: Column(
                                               children: [
+                                                Text(model.data![index]["accountNumber"]),
                                                 Text(
-                                                  "${data![index]["accountNumber"]} (${data![index]["accountName"].toString().substring(0, 8)}))",
+                                                  "${model.data![index]["accountName"].toString()}",
                                                   style:
                                                       TextStyle(fontSize: 17),
                                                 ),
@@ -246,32 +225,33 @@ class _DepositPreviewState extends State<DepositPreview> {
                                               ],
                                             ),
                                           )
-                                        : Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const Text('No Linked Accounts'),
-                                              SizedBox(height: 30,),
-                                              Padding(
-                                                padding: const EdgeInsets.all(35.0),
-                                                child: RoundedButtonborders(
-                                                    title: 'Link an account',
-                                                    color: Colors.white,
-                                                    backgroundColor:
-                                                        kPrimaryColor,
-                                                    borderColor: kPrimaryColor,
-                                                    press: () {
-                                                      Navigator.pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  LinkNewAccount()));
-                                                    }),
-                                              )
-                                            ],
-                                          ),
+
                                   ),
-                                ),
+                                )
+                                :    Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                  const Text('No Linked Accounts'),
+                              SizedBox(height: 30,),
+                              Padding(
+                                padding: const EdgeInsets.all(35.0),
+                                child: RoundedButtonborders(
+                                    title: 'Link an account',
+                                    color: Colors.white,
+                                    backgroundColor:
+                                    kPrimaryColor,
+                                    borderColor: kPrimaryColor,
+                                    press: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LinkNewAccount()));
+                                    }),
+                              )
+                              ],
+                            ),
                               ),
                             )
                           ],
@@ -301,7 +281,7 @@ class _DepositPreviewState extends State<DepositPreview> {
                           children: [
                             Expanded(
                               child: Text(
-                                dropdownValue,
+                                model.dropdownValue,
                                 maxLines: 1,
                                 style: const TextStyle(
                                   fontSize: 17.0,
@@ -318,7 +298,7 @@ class _DepositPreviewState extends State<DepositPreview> {
                         ),
                       ),
                       SizedBox(height: 4),
-                      if (ShowErrorText1 == true)
+                      if (model.ShowErrorText1 == true)
                         const Text(
                           "Select an Account to Continue",
                           style: TextStyle(color: Colors.red),
@@ -338,41 +318,57 @@ class _DepositPreviewState extends State<DepositPreview> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Express',
-                          style: TextStyle(fontSize: 19, color: Colors.orange)),
-                      Radio(
-                          value: 'Express',
-                          groupValue: Type,
-                          onChanged: (value) {
-                            setState(() {
-                              Type = value!.toString();
-                            });
-                            Provider.of<TransactionsData>(context,
-                                    listen: false)
-                                .setTransferType("Express");
-                          })
-                    ],
+                  InkWell(
+                    onTap: (){
+
+                      setState(() {
+                        Type = 'Express';
+                      });
+
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Express',
+                            style: TextStyle(fontSize: 19, color: Colors.orange)),
+                        Radio(
+                            value: 'Express',
+                            groupValue: Type,
+                            onChanged: (value) {
+                              setState(() {
+                                Type = value!.toString();
+                              });
+                              Provider.of<TransactionsData>(context,
+                                      listen: false)
+                                  .setTransferType("Express");
+                            })
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Normal',
-                          style: TextStyle(fontSize: 19, color: Colors.orange)),
-                      Radio(
-                          value: 'Normal',
-                          groupValue: Type,
-                          onChanged: (value) {
-                            setState(() {
-                              Type = value!.toString();
-                            });
-                            Provider.of<TransactionsData>(context,
-                                    listen: false)
-                                .setTransferType("Normal");
-                          })
-                    ],
+                  InkWell( onTap: (){
+
+                    setState(() {
+                      Type = 'Normal';
+                    });
+
+                  },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Normal',
+                            style: TextStyle(fontSize: 19, color: Colors.orange)),
+                        Radio(
+                            value: 'Normal',
+                            groupValue: Type,
+                            onChanged: (value) {
+                              setState(() {
+                                Type = value!.toString();
+                              });             Provider.of<TransactionsData>(context,
+                                      listen: false)
+                                  .setTransferType("Normal");
+                            })
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -387,9 +383,9 @@ class _DepositPreviewState extends State<DepositPreview> {
                         //     Provider.of<TransactionsData>(context, listen: false)
                         //         .getchosenAccount;
 
-                        if (ShowErrorText == null) {
+                        if (model.ShowErrorText == null) {
                           setState(() {
-                            ShowErrorText1 = true;
+                            model.ShowErrorText1 = true;
                           });
                           print("ShowErrorText");
                         } else {
@@ -404,8 +400,8 @@ class _DepositPreviewState extends State<DepositPreview> {
                             ),
                           );
                           setState(() {
-                            ShowErrorText = null;
-                            ShowErrorText1 == true;
+                            model.ShowErrorText = null;
+                            model.ShowErrorText1 == true;
                           });
                         }
                       },

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
-import '../../../auth/shared_preference.dart';
+import '../../../constants/shared_preference.dart';
 import '../../../constants/pagetransitions.dart';
 import '../../homescreen/home_screen.dart';
 import 'otp_view_model.dart';
@@ -25,10 +25,8 @@ class _OtpScreenState extends State<OtpScreen> {
   // SmsQuery _smsQuery = new SmsQuery();
   var onTapRecognizer;
 
-  bool hasError = false;
-  bool hasError1 = false;
 
-  String currentText = "";
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   void initState() {
@@ -127,9 +125,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   // fieldHeight: 50,
                   // fieldWidth: 40,
                   onChanged: (value) {
-                    setState(() {
-                      currentText = value;
-                    });
+                    model.setPin(value);
                   },
                   appContext: context,
                 ),
@@ -138,7 +134,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 // error showing widget
                 child: Text(
-                  hasError ? "Fill up all the cells properly" : "",textAlign: TextAlign.center,
+                  model.hasError ? "Fill up all the cells correctly" : "",textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.red.shade300,
                     fontSize: 15,
@@ -149,7 +145,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 // error showing widget
                 child: Text(
-                  hasError1 ? "Incorrect Pin" : "", textAlign: TextAlign.center,
+                  model.hasError1 ? "Incorrect Pin" : "", textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.red.shade300,
                     fontSize: 15,
@@ -162,6 +158,7 @@ class _OtpScreenState extends State<OtpScreen> {
               InkWell(
                 onTap: () {
                   //call reset
+                  model.ResendOtp(context);
                 },
                 child: const Text(
                   "Resend OTP",
@@ -171,6 +168,14 @@ class _OtpScreenState extends State<OtpScreen> {
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
+              ),
+               Text(
+                model.resendnotify,
+                style: const TextStyle(
+                    color: Colors.blueAccent,
+                    fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(
                 height: 14,
@@ -188,7 +193,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     height: 50,
                     child: TextButton(
                       onPressed: () async {
-                         await validateOtp();
+                         await model.validateOtp(context);
                       },
                       child: const Center(
                         child: Text(
@@ -210,40 +215,6 @@ class _OtpScreenState extends State<OtpScreen> {
     ), viewModelBuilder: () => OtpViewModel() );
   }
 
-  validateOtp()  async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? pin = prefs.getString("otp");
-    print(pin);
-    if (currentText.length != 4) {
-
-      setState(() {
-            hasError = true;
-          });
-        } else {
-      if( currentText != pin ) {
-        setState(() {
-          hasError1 = true;
-          hasError = false;
-
-        });
-      }
-      if( currentText == pin ){
-        setState(() {
-          hasError = false;
-          hasError1 = false;
-
-        });
-        print('correct pin');
-       // userPreferences.setUserStatus(2);
-            Navigator.pushReplacement(
-            context,
-            SizeTransition5(HomeScreen()));
-      }
-
-    }
-
-
-  }
 
   // Future<void> _validateOtp(OtpModel model) async {
   //   print(currentText);

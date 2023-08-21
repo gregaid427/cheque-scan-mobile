@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../auth/api_client.dart';
-import '../../../auth/shared_preference.dart';
-import '../../../auth/user.dart';
-import '../../../auth/validator.dart';
+import '../../../constants/api_client.dart';
+import '../../../constants/shared_preference.dart';
+import '../../../constants/user.dart';
+import '../../../constants/validator.dart';
 import '../../../components/rounded_button.dart';
 import '../../../constants/constants.dart';
 import '../../../core/custom_textfield.dart';
@@ -18,7 +18,6 @@ import '../sign_up/signup_screen.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 
-bool obscure = true;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,66 +27,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  SignInViewModel signInViewModel = SignInViewModel();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final ApiClient _apiClient = ApiClient();
-  final UserPreferences _userPreferences = UserPreferences();
-  bool _showPassword = false;
-
-  Future<void> login() async {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Authenticating...'),
-        backgroundColor: Colors.green.shade300,
-      ));
-
-      dynamic res = await _apiClient.login(
-        emailController.text,
-        passwordController.text,
-      );
-
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-      if (res['success'] == 1) {
-        String accessToken = res['access_token'];
-        String? User_id = res['user_data']['user_id'].toString();
-        print('correct credentials');
-        //persist user data by sharedpreferences
-        _userPreferences.saveUserid(User_id!, accessToken);
-        dynamic profileresponse =
-        await _apiClient.getUserProfileData(accessToken, User_id);
-        //persist user data by sharedpreferences
-        if (profileresponse['success'] == 1) {
-          var userData = profileresponse['data'];
-          User authUser = User.fromJson(userData);
-          UserPreferences().saveUser(authUser);
-        }
-
-        UserPreferences userPreferences = UserPreferences();
-        userPreferences.setUserStatus(2);
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>  HomeScreen()));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${res['data']}'),
-          backgroundColor: Colors.red.shade300,
-        ));
-      }
-    }
-  }
-
-  void changePasswordvisibility() {
-    setState(() {
-      obscure = !obscure;
-    });
-    // notifyListeners();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           BorderRadius.vertical(top: Radius.circular(50))),
                   child: SingleChildScrollView(
                     child: Form(
-                  key: _formKey,
+                  key: model.formKey,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             CustomTextField(
                               // controller:signInViewModel.usernameController,
-                              controller: emailController,
+                              controller: model.emailController,
                               validator: (value) {
                                 return Validator.validateEmail(value ?? "");
                               },
@@ -149,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             CustomTextField(
                               //  controller:signInViewModel.passwordController,
                               //  obscure: _showPassword,
-                              controller: passwordController,
+                              controller: model.passwordController,
                               validator: (value) {
                                 return Validator.validatePassword(
                                     value ?? "");
@@ -157,9 +96,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               //  prefixImage: 'assets/icons/password.svg',
                               hintText: 'Password',
-                              obscure: obscure,
+                              obscure: model.obscure,
                               type: TextFieldType.password,
-                              suffixFunc: () => changePasswordvisibility(),
+                              suffixFunc: () => model.changePasswordvisibility(),
                             ),
                             const SizedBox(
                               height: 10,
@@ -183,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             title: 'Login',
                             color: kPrimaryColor,
                             backgroundColor: Colors.white,
-                            press: () => login(),
+                            press: () => model.login(context),
                           ),
                         ),
                         const SizedBox(
@@ -192,11 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Center(
                           child: GestureDetector(
                               onTap: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignUpScreen()));
+                                model.navigatetosignup(context);
                               },
                               child: const Text(
                                 'Don\'t have an account? Sign-Up',

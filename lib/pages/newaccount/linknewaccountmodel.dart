@@ -1,12 +1,11 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-import '../../auth/user.dart';
+import '../../constants/user.dart';
 
-class CreateAccountModel {
-
+class LinkAccountModel extends ChangeNotifier {
   String? accountType;
   String? bank;
   String? accountName;
@@ -30,20 +29,18 @@ class CreateAccountModel {
           'bank': bank,
           'accountName': accountName,
           'accountNumber': accountNumber,
-           "user_id": userid
+          "user_id": userid
         }));
 
-    if(response.statusCode == 200) {
-return   response.statusCode;  }
-    if(response.statusCode != 200) {
-    return  response.statusCode;
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    }
+    if (response.statusCode != 200) {
+      return response.statusCode;
     }
 
     // if (result.code != Endpoints.AppSuccessCode) {
     //   showToast(result.msg);
     // }
-
   }
-
-
 }

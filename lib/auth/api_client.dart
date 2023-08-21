@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:cheque_scan/auth/shared_preference.dart';
-import 'package:cheque_scan/auth/user.dart';
+
 import 'package:dio/dio.dart';
 
 import '../constants/app_url.dart';

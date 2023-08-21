@@ -15,5 +15,13 @@ class AppUrl {
 
   static const String postscandata = "$baseURL/scan/upload/";
 
+  static const String userlinkedaccount = baseURL + "/linkedaccounts/";
+  static const String accountTransactions = baseURL + "/transactions/";
+  static const String otpReset = baseURL + "/users/pinreset/";
+  static const String uploadscandata = baseURL + "/scan/upload/";
+
+
+
+
 
 }

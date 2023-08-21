@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cheque_scan/pages/homescreen/home_screen.dart';
+import 'package:stacked/stacked.dart';
 import '../../constants/pagetransitions.dart';
 import '../../core/custom_textfield1.dart';
 import '../../core/enums/textfield_type.dart';
@@ -16,7 +17,6 @@ class LinkNewAccount extends StatelessWidget {
   LinkNewAccount({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
 
-  CreateAccountModel _createAccountModel = new CreateAccountModel();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,9 @@ class LinkNewAccount extends StatelessWidget {
         loopAnimation: false,
       );
     }
-    return SafeArea(
+    return ViewModelBuilder<LinkAccountModel>.reactive(
+        builder: (context, model, child) =>
+      SafeArea(
       child: Scaffold(
         body: Column(
           children: [
@@ -90,7 +92,7 @@ class LinkNewAccount extends StatelessWidget {
                                     obscure: false,
                                     type: TextFieldType.name,
                                     inputType: TextInputType.text,
-                                    onChanged: (value){_createAccountModel.accountType = value; },
+                                    onChanged: (value){model.accountType = value; },
                                   ),
                                   SizedBox(height: 10.0),
                                   const Text(
@@ -104,7 +106,7 @@ class LinkNewAccount extends StatelessWidget {
                                     obscure: false,
                                     type: TextFieldType.name,
                                     inputType: TextInputType.text,
-                                    onChanged: (value){_createAccountModel.bank = value; },
+                                    onChanged: (value){model.bank = value; },
 
                                   ),
                                   SizedBox(height: 10.0),
@@ -119,7 +121,7 @@ class LinkNewAccount extends StatelessWidget {
                                     obscure: false,
                                    // type: TextFieldType.name,
                                     inputType: TextInputType.text,
-                                    onChanged: (value){_createAccountModel.accountName = value; },
+                                    onChanged: (value){model.accountName = value; },
 
                                   ),
                                  SizedBox(height: 10.0),
@@ -134,7 +136,7 @@ class LinkNewAccount extends StatelessWidget {
                                     obscure: false,
                                     type: TextFieldType.name,
                                     inputType: TextInputType.text,
-                                    onChanged: (value){_createAccountModel.accountNumber = value; },
+                                    onChanged: (value){model.accountNumber = value; },
 
                                   ),
                                  const SizedBox(height: 50),
@@ -145,7 +147,7 @@ class LinkNewAccount extends StatelessWidget {
                                       color: Colors.white,
                                       backgroundColor: kPrimaryColor,
                                       press: () async{
-                                       int responseCode = await _createAccountModel.LinkAccountService();
+                                       int responseCode = await model.LinkAccountService();
                                        if(responseCode == 200){
                                          SuccessAlert();
                                        }
@@ -168,6 +170,6 @@ class LinkNewAccount extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ), viewModelBuilder: ()=>LinkAccountModel() ,);
   }
 }

@@ -3,7 +3,7 @@
 import 'dart:io';
 //import 'dart:js_interop';
 
-import 'package:cheque_scan/auth/api_client.dart';
+import 'package:cheque_scan/constants/api_client.dart';
 import 'package:cheque_scan/pages/transactions/transactions_preview_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

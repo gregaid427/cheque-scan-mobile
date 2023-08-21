@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../auth/api_client.dart';
-import '../../../auth/shared_preference.dart';
-import '../../../auth/user.dart';
-import '../../../auth/validator.dart';
+import '../../../constants/api_client.dart';
+import '../../../constants/shared_preference.dart';
+import '../../../constants/user.dart';
+import '../../../constants/validator.dart';
 import '../../../components/rounded_button.dart';
 import '../../../constants/constants.dart';
 import '../../../core/custom_textfield.dart';

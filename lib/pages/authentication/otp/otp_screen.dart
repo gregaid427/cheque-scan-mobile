@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
-import '../../../auth/shared_preference.dart';
+import '../../../constants/shared_preference.dart';
 import '../../../constants/pagetransitions.dart';
 import '../../homescreen/home_screen.dart';
 import 'otp_view_model.dart';

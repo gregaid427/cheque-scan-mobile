@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import '../../../auth/api_client.dart';
-import '../../../auth/shared_preference.dart';
-import '../../../auth/user.dart';
+import '../../../constants/api_client.dart';
+import '../../../constants/shared_preference.dart';
+import '../../../constants/user.dart';
 import '../../../constants/pagetransitions.dart';
 import '../../homescreen/home_screen.dart';
 import '../sign_up/signup_screen.dart';

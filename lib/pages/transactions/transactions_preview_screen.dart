@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../auth/user.dart';
+import '../../constants/user.dart';
 import '../../components/ custom_appbar.dart';
 import '../../components/rounded_button.dart';
 import '../../constants/constants.dart';

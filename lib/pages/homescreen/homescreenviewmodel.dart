@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../auth/api_client.dart';
+import '../../constants/api_client.dart';
 
 class HomeScreeViewModel extends ChangeNotifier {
 

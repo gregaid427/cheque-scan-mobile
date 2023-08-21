@@ -2,7 +2,7 @@ import 'package:cheque_scan/pages/authentication/sign_in/signin_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../auth/api_client.dart';
+import '../../../constants/api_client.dart';
 
 import '../../../constants/pagetransitions.dart';
 import '../../homescreen/home_screen.dart';

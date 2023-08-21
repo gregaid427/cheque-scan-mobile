@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../auth/api_client.dart';
+import '../../constants/api_client.dart';
 import '../../components/home_card.dart';
 
 bool? load = false;

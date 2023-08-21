@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../auth/api_client.dart';
-import '../../constants/api_service.dart';
+import '../../constants/api_client.dart';
 import 'datamodel.dart';
 import 'home_screen.dart';
 import 'homescreenviewmodel.dart';

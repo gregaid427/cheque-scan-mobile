@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cheque_scan/auth/register.dart';
 import 'package:cheque_scan/components/rounded_button.dart';
 import 'package:cheque_scan/pages/authentication/sign_in/signin_screen.dart';
 import 'package:cheque_scan/pages/newaccount/link_new_account.dart';
@@ -10,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../auth/shared_preference.dart';
+import '../../constants/shared_preference.dart';
 import '../../components/ custom_appbar.dart';
 import '../../constants/constants.dart';
 import '../chequefrontscan/front_cheque_scan.dart';
@@ -45,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
     CardScrollViewModel cardScrollViewModel = CardScrollViewModel();
 
     void initState() {
-
       userPreferences.setUserStatus(2);
       super.initState();
     }

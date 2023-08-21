@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 
-import '../../auth/api_client.dart';
+import '../../constants/api_client.dart';
 
 
 class DepositChequeViewModel extends ChangeNotifier {

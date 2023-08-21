@@ -2,7 +2,7 @@ import 'package:cheque_scan/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../auth/shared_preference.dart';
+import '../constants/shared_preference.dart';
 
 class CustomAppbar extends StatelessWidget {
   const CustomAppbar({Key? key}) : super(key: key);

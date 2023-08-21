@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'package:cheque_scan/auth/shared_preference.dart';
-import 'package:cheque_scan/auth/user.dart';
+import 'package:cheque_scan/constants/shared_preference.dart';
+import 'package:cheque_scan/constants/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../constants/app_url.dart';
+import 'app_url.dart';
 import 'package:http/http.dart' as http;
 
 

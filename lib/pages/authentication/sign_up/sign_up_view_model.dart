@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../auth/api_client.dart';
-import '../../../auth/shared_preference.dart';
+import '../../../constants/api_client.dart';
+import '../../../constants/shared_preference.dart';
 import '../otp/otp_screen.dart';
 
 class SignupViewModel  extends ChangeNotifier{

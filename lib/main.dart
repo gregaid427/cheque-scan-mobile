@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
     // home:OtpScreen(),
-      home: SafeArea(child:  startupStatus == 1 ? OtpScreen()  :  LoginScreen()),
+      home: SafeArea(child:  startupStatus == false ? OtpScreen()  :  LoginScreen()),
         builder: EasyLoading.init(),
     ),
       viewModelBuilder: () => StartupModel(),
@@ -66,12 +66,11 @@ class _MyAppState extends State<MyApp> {
 
 class  StartupModel extends ChangeNotifier {
 
-  ReadySetup(){
-    void get() async{
+  ReadySetup() async{
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      startupStatus =   prefs.getInt('userAppStatus');
+      startupStatus =   prefs.getInt('verified');
       notifyListeners();
       print(startupStatus);
-    }
+
   }
 }

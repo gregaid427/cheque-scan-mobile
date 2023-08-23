@@ -182,6 +182,32 @@ class ApiClient {
   }
 
 
+  Future <dynamic>UpdateVerification(context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? userid = prefs.getString("user_id");
+    try {
+      Response response = await _dio.post(
+        AppUrl.otpVerify,
+        data: {
+          'user_id': userid
+        },
+
+        // queryParameters: {'apikey': ApiSecret.apiKey},
+      );
+      print(response.statusCode);
+
+      return response;
+    } on DioError catch (e) {
+
+      print("App internal Error");
+
+      return e;
+      // return 'conn err';
+    }
+  }
+
+
   // http.Response response;
   // final SharedPreferences prefs = await SharedPreferences.getInstance();
   // String? userid = prefs.getString("user_id");

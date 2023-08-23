@@ -63,6 +63,9 @@ void setPin(pin){
         EasyLoading.dismiss();
         // EasyLoading.showSuccess('Success!');
 
+        ApiClient apiClient = ApiClient();
+        data =  await apiClient.UpdateVerification(context);
+
         hasError = false;
         notifyListeners();
 

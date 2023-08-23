@@ -20,6 +20,7 @@ class AppUrl {
   static const String otpReset = baseURL + "/users/pinreset/";
   static const String uploadscandata = baseURL + "/scan/upload/";
 
+  static const String otpVerify = baseURL + "/users/UpdatePinStatus/";
 
 
 

@@ -47,7 +47,8 @@ class ApiClient {
       );
      // print(response.st);
       return response;
-    } on DioError catch (e) {
+    }
+    on DioError catch (e) {
 
       print("App internal Error");
       EasyLoading.dismiss();
@@ -127,7 +128,6 @@ class ApiClient {
     http.Response response;
     response = await http.get(Uri.parse(AppUrl.userlinkedaccount+userid!));
     if (response.statusCode == 200) {
-      print("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
       dynamic serverD = json.decode(response.body);
       dynamic data = serverD?['data'];

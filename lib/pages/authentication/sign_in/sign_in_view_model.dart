@@ -1,3 +1,4 @@
+import 'package:cheque_scan/pages/authentication/otp/otp_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -35,19 +36,30 @@ class SignInViewModel extends ChangeNotifier {
 
       dynamic res = response.data;
       int? statuscode = response.statusCode;
-      //print(response);
+     print(response);
       if(statuscode == 200){
-        if (res['success'] == 1) {
+        print("Entered");
+        if (res['success'] == 1 && res['verified'] == 'true') {
           EasyLoading.dismiss();
           //  String accessToken = res['access_token'];
-          print(res['data']);
+          print(res['verified']);
 
           var userData = res['data'];
           UserPreferences().saveUser(User.fromJson(userData));
           userPreferences.setUserStatus(2);
           Navigator.pushReplacement(context,SizeTransition5(HomeScreen()));
         }
-        else {
+        if (res['success'] == 1 && res['verified'] == 'false') {
+          EasyLoading.dismiss();
+          //  String accessToken = res['access_token'];
+          print(res['verified']);
+
+          var userData = res['data'];
+          UserPreferences().saveUser(User.fromJson(userData));
+        //  userPreferences.setUserStatus(2);
+          Navigator.pushReplacement(context,SizeTransition5(OtpScreen()));
+        }
+        if (res['success'] == 0 ) {
           EasyLoading.dismiss();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Error: ${res['message']}'),

@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
     // home:OtpScreen(),
-      home: SafeArea(child:  startupStatus == false ? OtpScreen()  :  LoginScreen()),
+      home: SafeArea(child: LoginScreen()),
         builder: EasyLoading.init(),
     ),
       viewModelBuilder: () => StartupModel(),

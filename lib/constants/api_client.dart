@@ -9,32 +9,34 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app_url.dart';
 import 'package:http/http.dart' as http;
 
-
 class ApiClient {
+  final Dio _dio =
+      Dio(BaseOptions(connectTimeout: Duration(milliseconds: 10000)));
 
-  final Dio _dio = Dio(BaseOptions(connectTimeout: Duration(milliseconds: 5000)));
+  AppUrl appUrl = AppUrl();
 
-  AppUrl appUrl =  AppUrl();
+  Future<dynamic> registerUser(Map userdata, BuildContext context) async {
+    final http.Response response = await http.post(Uri.parse(AppUrl.register),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(userdata));
 
-  Future<dynamic> registerUser(Map<String, dynamic>? data, context) async {
-    try {
-      Response response = await _dio.post(
-        AppUrl.register,
-        data: data,);
-      return response;
-    } on DioError catch (e) {
-      print(e.error);
-      print("App internal Error");
+    print(response.body);
+    if (response.statusCode == 200) {
       EasyLoading.dismiss();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Error: Unable to create account'),
-        backgroundColor: Colors.red.shade300,
-      ));
-      return e;
+      print('sign up successfully');
+      return response;
+    }
+    if (response.statusCode != 200) {
+      EasyLoading.dismiss();
+      print('error signing up');
+      return response;
     }
   }
 
-  Future<dynamic> login(String email, String password, BuildContext context) async {
+  Future<dynamic> login(
+      String email, String password, BuildContext context) async {
     try {
       Response response = await _dio.post(
         AppUrl.login,
@@ -45,10 +47,10 @@ class ApiClient {
 
         // queryParameters: {'apikey': ApiSecret.apiKey},
       );
-     // print(response.st);
+      // print(response.st);
       return response;
-    }
-    on DioError catch (e) {
+    } on DioException catch (e) {
+      print(e);
 
       print("App internal Error");
       EasyLoading.dismiss();
@@ -56,8 +58,8 @@ class ApiClient {
         content: Text('Error: Unable to log in'),
         backgroundColor: Colors.red.shade300,
       ));
-      return e;
-     // return 'conn err';
+      return e.response!.data;
+      // return 'conn err';
     }
   }
 
@@ -119,16 +121,13 @@ class ApiClient {
     }
   }
 
-
-
-  Future <List?>getUserLinkedaccount() async {
+  Future<List?> getUserLinkedaccount() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? userid = prefs.getString("user_id");
     http.Response response;
-    response = await http.get(Uri.parse(AppUrl.userlinkedaccount+userid!));
+    response = await http.get(Uri.parse(AppUrl.userlinkedaccount + userid!));
     if (response.statusCode == 200) {
-
       dynamic serverD = json.decode(response.body);
       dynamic data = serverD?['data'];
       print(serverD?['data']);
@@ -138,14 +137,28 @@ class ApiClient {
     //   return response.statusCode;
     // }
   }
-  Future <List?>getTransactions() async {
+
+  Future<List?> getBanks() async {
+    http.Response response;
+    response = await http.get(Uri.parse(AppUrl.getbanks));
+    if (response.statusCode == 200) {
+      dynamic serverD = json.decode(response.body);
+      dynamic data = serverD?['data'];
+      print(serverD?['data']);
+      return data as List;
+    }
+    // else{
+    //   return response.statusCode;
+    // }
+  }
+
+  Future<List?> getTransactions() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? userid = prefs.getString("user_id");
     http.Response response;
-    response = await http.get(Uri.parse(AppUrl.accountTransactions+userid!));
+    response = await http.get(Uri.parse(AppUrl.accountTransactions + userid!));
     if (response.statusCode == 200) {
-
       dynamic serverD = json.decode(response.body);
       dynamic data = serverD?['data'];
       print(serverD?['data']);
@@ -156,16 +169,14 @@ class ApiClient {
     // }
   }
 
-  Future <dynamic>ResetOTP(context) async {
+  Future<dynamic> ResetOTP(context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? userid = prefs.getString("user_id");
     try {
       Response response = await _dio.post(
         AppUrl.otpReset,
-        data: {
-          'user_id': userid
-        },
+        data: {'user_id': userid},
 
         // queryParameters: {'apikey': ApiSecret.apiKey},
       );
@@ -173,7 +184,6 @@ class ApiClient {
 
       return response;
     } on DioError catch (e) {
-
       print("App internal Error");
 
       return e;
@@ -181,56 +191,43 @@ class ApiClient {
     }
   }
 
-
-  Future <dynamic>UpdateVerification(context) async {
+  Future<dynamic> UpdateVerification(context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? userid = prefs.getString("user_id");
+    print(userid);
     try {
       Response response = await _dio.post(
         AppUrl.otpVerify,
-        data: {
-          'user_id': userid
-        },
+        data: {'user_id': userid},
 
         // queryParameters: {'apikey': ApiSecret.apiKey},
       );
       print(response.statusCode);
 
-      return response;
+      return response.statusCode;
     } on DioError catch (e) {
-
       print("App internal Error");
 
       return e;
       // return 'conn err';
     }
   }
-
-
-  // http.Response response;
-  // final SharedPreferences prefs = await SharedPreferences.getInstance();
-  // String? userid = prefs.getString("user_id");
-  // response = await http.get(Uri.parse("http://192.168.43.53:5000/api/transactions/$userid"));
-  // List? data;
-  // if(response.statusCode == 200){
-  // var serverData = json.decode(response.body);
-  // data = serverData?['data'];
-  // print(data);
-  // return data;
-  // }
-  // else{
-  // return 'error';
-  // }
-
-
-
-
-
-
-
-
-
+}
+// http.Response response;
+// final SharedPreferences prefs = await SharedPreferences.getInstance();
+// String? userid = prefs.getString("user_id");
+// response = await http.get(Uri.parse("http://192.168.43.53:5000/api/transactions/$userid"));
+// List? data;
+// if(response.statusCode == 200){
+// var serverData = json.decode(response.body);
+// data = serverData?['data'];
+// print(data);
+// return data;
+// }
+// else{
+// return 'error';
+// }
 
 //
 //
@@ -271,4 +268,3 @@ class ApiClient {
 //
 //   GeneralResponseModel({required this.code, required this.msg});
 // }
-}

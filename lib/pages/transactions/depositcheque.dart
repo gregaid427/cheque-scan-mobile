@@ -173,8 +173,6 @@ class _DepositPreviewState extends State<DepositPreview> {
                                     (index) =>
                                          GestureDetector(
                                             onTap: () {
-
-
                                             setState(() {
                                                 model.ShowErrorText1 = false;
                                                 model.ShowErrorText = true;

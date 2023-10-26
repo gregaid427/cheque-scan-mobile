@@ -9,6 +9,17 @@ class TransactionsData extends ChangeNotifier {
   String? _transferType = "Express";
   String? _accountType;
   String? _bank;
+  String? _chequeBank;
+
+  int? _accountNoLength;
+  int? _BankNoLength;
+  int? _chequeNoLength;
+
+  String? _chequeBankNo;
+  String? _chequeAccntNo;
+  String? _chequeNo;
+  String? _chequeBankName;
+
 
 
 
@@ -20,11 +31,55 @@ class TransactionsData extends ChangeNotifier {
   get getaccountType => _accountType;
   get getbank => _bank;
 
+  get getChequebank => _chequeBank;
+  get getacctNoLength => _accountNoLength;
+  get getChequeNoLength => _chequeNoLength;
+  get getBankNoLength => _BankNoLength;
+
+  get getchequeBankNo => _chequeBankNo;
+  get getchequeAccntNo => _chequeAccntNo;
+  get getchequeNo => _chequeNo;
+  get getchequeBankName => _chequeBankName;
+
+
+  void setChequeValues(String chequeBank,String accountNo,String BankNo,String chequeNo){
+    _chequeBankName = chequeBank;
+    notifyListeners();
+
+    _chequeAccntNo = accountNo;
+    notifyListeners();
+
+    _chequeBankNo = BankNo;
+    notifyListeners();
+
+    _chequeNo = chequeNo;
+    notifyListeners();
+
+    print('cheque values set');
+
+  }
+
 
 
   void setbank(String link){
     _bank = link;
     notifyListeners();
+
+  }
+  void setChequeDetails(String chequeBank,int accountNoLength,int BankNoLength,int chequeNoLength){
+    _chequeBank = chequeBank;
+    notifyListeners();
+
+    _accountNoLength = accountNoLength;
+    notifyListeners();
+
+    _BankNoLength = BankNoLength;
+    notifyListeners();
+
+    _chequeNoLength = chequeNoLength;
+    notifyListeners();
+
+print('cheque details set');
 
   }
 

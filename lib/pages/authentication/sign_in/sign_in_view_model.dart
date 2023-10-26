@@ -2,6 +2,7 @@ import 'package:cheque_scan/pages/authentication/otp/otp_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/api_client.dart';
 import '../../../constants/shared_preference.dart';
@@ -23,7 +24,12 @@ class SignInViewModel extends ChangeNotifier {
 
   final UserPreferences _userPreferences = UserPreferences();
 
+
   Future<void> login(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? verified = prefs.getBool("verifiedOtp");
+
+
     if (formKey.currentState!.validate()) {
 
       EasyLoading.show( status: 'Authenticating...');
@@ -39,7 +45,17 @@ class SignInViewModel extends ChangeNotifier {
      print(response);
       if(statuscode == 200){
         print("Entered");
-        if (res['success'] == 1 && res['verified'] == 'true') {
+        if (res['success'] == 1 && res['data']['verified'] == 'false') {
+          EasyLoading.dismiss();
+          //  String accessToken = res['access_token'];
+          print(res['verified']);
+
+          var userData = res['data'];
+          UserPreferences().saveUser(User.fromJson(userData));
+          //  userPreferences.setUserStatus(2);
+          Navigator.pushReplacement(context,SizeTransition5(OtpScreen()));
+        }
+        if (res['success'] == 1 && res['data']['verified'] == 'true') {
           EasyLoading.dismiss();
           //  String accessToken = res['access_token'];
           print(res['verified']);
@@ -49,16 +65,7 @@ class SignInViewModel extends ChangeNotifier {
           userPreferences.setUserStatus(2);
           Navigator.pushReplacement(context,SizeTransition5(HomeScreen()));
         }
-        if (res['success'] == 1 && res['verified'] == 'false') {
-          EasyLoading.dismiss();
-          //  String accessToken = res['access_token'];
-          print(res['verified']);
 
-          var userData = res['data'];
-          UserPreferences().saveUser(User.fromJson(userData));
-        //  userPreferences.setUserStatus(2);
-          Navigator.pushReplacement(context,SizeTransition5(OtpScreen()));
-        }
         if (res['success'] == 0 ) {
           EasyLoading.dismiss();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -85,7 +92,6 @@ class SignInViewModel extends ChangeNotifier {
   }
 
   void navigatetosignup(context) {
-
 
     Navigator.pushReplacement(
         context,

@@ -3,6 +3,7 @@ import 'package:cheque_scan/pages/transactions/transactionPreviewModel.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
@@ -14,6 +15,7 @@ import '../../constants/constants.dart';
 import '../../constants/pagetransitions.dart';
 import '../../core/provider/Transactionsdata.dart';
 import '../chequebackscan/back_cheque_scan_model.dart';
+import 'depositChequeModel.dart';
 
 String name = "";
 String user_id = "";
@@ -51,17 +53,19 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TransactionPreviewModel>.reactive(
+      onViewModelReady: (model) => model.ReadySetup(),
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
           child: Column(
             children: [
               const CustomAppbar(),
               const Expanded(
+                  flex: 1,
                   child: Text('Transaction Preview', style: kTitleStyle)),
               Expanded(
-                  flex: 7,
+                  flex: 8,
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -82,21 +86,53 @@ class _TransactionsPreviewScreenState extends State<TransactionsPreviewScreen> {
                                       color: Colors.deepOrange.shade400,
                                       fontSize: 20)),
                               const SizedBox(height: 13),
-                              const Text('Name :',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 17)),
+                              Row(
+                                children: [
+                                  const Text('Name :',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 17)),
+                                  Text(
+                                    'name',
+                                    style: TextStyle(
+                                        color: Colors.deepOrange.shade400,
+                                        fontSize: 19),
+                                  )
+                                ],
+                              ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Text('Bank :',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 17)),
+                              Row(
+                                children: [
+                                  const Text('Bank :',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 17)),
+                                  Text(
+                                      Provider.of<TransactionsData>(context)
+                                          .getchequeBankName!,
+                                    style: TextStyle(
+                                        color: Colors.deepOrange.shade400,
+                                        fontSize: 19),
+                                  )
+                                ],
+                              ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Text('Account Number :',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 17)),
+                              Row(
+                                children: [
+                                  const Text('Account Number :',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 17)),
+                                  Text(
+                                    Provider.of<TransactionsData>(context)
+                                        .getchequeAccntNo,
+                                    style: TextStyle(
+                                        color: Colors.deepOrange.shade400,
+                                        fontSize: 19),
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                           const SizedBox(
@@ -290,8 +326,12 @@ class _ConfimButtonState extends State<ConfimButton> {
         Provider.of<TransactionsData>(context, listen: false).getfrontImagelink;
     String? backLink =
         Provider.of<TransactionsData>(context, listen: false).getbackImagelink;
-    String? scanAccntNo = "123456789-875-63";
-    String? scanBankNo = "123456789-875-63";
+    String? scanAccntNo =
+        Provider.of<TransactionsData>(context, listen: false).getchequeAccntNo;
+    String? scanBankNo =
+        Provider.of<TransactionsData>(context, listen: false).getchequeBankNo;
+    String? scancheqNo =
+        Provider.of<TransactionsData>(context, listen: false).getchequeNo;
 
     EmptyFields() {
       Provider.of<TransactionsData>(context, listen: false).setFieldsEmpty();
@@ -302,6 +342,8 @@ class _ConfimButtonState extends State<ConfimButton> {
     return Expanded(
       child: InkWell(
         onTap: () async {
+          EasyLoading.show();
+
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           String? userid = prefs.getString("user_id");
           int? response = await backscanModel.uploadImage(
@@ -311,11 +353,18 @@ class _ConfimButtonState extends State<ConfimButton> {
               scanAccntNo: scanAccntNo,
               amount: '23,000',
               account_id: '23,000',
-              scanBankNo: scanBankNo);
+              scanBankNo: scanBankNo,
+              scancheqNo: scancheqNo
+
+          );
           if (response == 200) {
+            EasyLoading.dismiss();
+
             SuccessAlert();
             EmptyFields();
           } else {
+            EasyLoading.dismiss();
+
             ErrorAlert();
           }
         },
@@ -372,3 +421,11 @@ class CancelButton extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+

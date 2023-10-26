@@ -34,8 +34,6 @@ class DepositChequeViewModel extends ChangeNotifier {
   void ReadySetup()async{
     resetdropdown();
     apicall();
-
-
   }
 
   bool getdatalength() {

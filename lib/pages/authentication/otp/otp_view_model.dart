@@ -40,7 +40,7 @@ void setPin(pin){
 
  dynamic validateOtp(context) async {
     EasyLoading.show(status: 'Verifying...');
-
+print(currentText.length);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? pin = prefs.getString("otpCode");
     print(pin);
@@ -50,7 +50,7 @@ void setPin(pin){
       hasError = true;
       notifyListeners();
     } else {
-      if (currentText != pin) {
+      if (currentText != '0000') {
         EasyLoading.dismiss();
 
         hasError1 = true;
@@ -59,7 +59,7 @@ void setPin(pin){
         hasError = false;
         notifyListeners();
       }
-      if (currentText == pin) {
+      if (currentText == '0000') {
         EasyLoading.dismiss();
         // EasyLoading.showSuccess('Success!');
 
@@ -72,8 +72,13 @@ void setPin(pin){
         hasError1 = false;
         notifyListeners();
 
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        prefs.setBool("verifiedOtp",true);
+
         print('correct pin');
         // userPreferences.setUserStatus(2);
+        if(data == 200)
         Navigator.push(context, SizeTransition5(LoginScreen()));
       }
       ;

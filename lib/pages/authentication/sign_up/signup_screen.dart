@@ -107,6 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             type: TextFieldType.name,
                                             //  prefixImage: 'assets/icons/lock.svg',
                                             hintText: 'Other Names',
+                                            validate: false,
                                           ),
                                           const SizedBox(
                                             height: 15,

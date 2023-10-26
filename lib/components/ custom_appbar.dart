@@ -16,16 +16,17 @@ class CustomAppbar extends StatelessWidget {
         children:  [
           InkWell(
             onTap: (){
+
               UserPreferences userPreferences = UserPreferences();
               userPreferences.removeUser();
             },
-            child: Icon(
+            child: const Icon(
               Icons.menu,
               color: kPrimaryColor,
               size: 35,
             ),
           ),
-          Image(
+          const Image(
             image: AssetImage(
               'assets/images/logo.PNG',
             ),

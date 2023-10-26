@@ -1,3 +1,4 @@
+import 'package:cheque_scan/components/drawer.dart';
 import 'package:cheque_scan/pages/authentication/otp/otp_screen.dart';
 import 'package:cheque_scan/pages/authentication/sign_in/signin_screen.dart';
 import 'package:cheque_scan/pages/chequebackscan/back_cheque_scan.dart';
@@ -61,7 +62,6 @@ class _MyAppState extends State<MyApp> {
     );
 
   }
-
 }
 
 class  StartupModel extends ChangeNotifier {
